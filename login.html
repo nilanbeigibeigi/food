@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Saffron Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--crimson:#C0392B;--saffron:#E8A020;--forest:#1A6B3A;--store-green:#1B5E35;--night:#0F1A0F;--cream:#FDF6E3;--warm-white:#FFFCF5;--text-dark:#1A1008;--text-mid:#5C4A2A;--border:rgba(200,160,60,0.2);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--warm-white);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column;}
+nav{background:var(--store-green);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;border-bottom:3px solid var(--saffron);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:white;line-height:1.1;}
+.nav-logo-text .sub{font-size:10px;color:rgba(255,255,255,0.45);font-weight:400;display:block;font-family:'Outfit',sans-serif;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:14px;font-weight:500;}
+.nav-links a:hover{color:var(--saffron);}
+
+.login-layout{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 64px);}
+.login-left{background:linear-gradient(135deg,var(--store-green) 0%,var(--night) 100%);padding:4rem;display:flex;flex-direction:column;justify-content:center;}
+.login-brand{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:white;margin-bottom:6px;}
+.login-brand span{color:var(--saffron);}
+.login-tagline{font-size:15px;color:rgba(255,255,255,0.6);margin-bottom:3rem;line-height:1.6;}
+.login-feature{display:flex;align-items:center;gap:14px;margin-bottom:1.2rem;}
+.login-feature-icon{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,0.08);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.login-feature-text{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.5;}
+.login-feature-text strong{color:white;display:block;font-size:14px;margin-bottom:2px;}
+.login-langs{margin-top:3rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.1);}
+.login-langs-title{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px;}
+.lang-pills{display:flex;gap:8px;}
+.lang-pill{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px;padding:5px 14px;border-radius:20px;}
+
+.login-right{background:white;padding:4rem;display:flex;flex-direction:column;justify-content:center;align-items:center;}
+.login-box{width:100%;max-width:420px;}
+.login-box-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;margin-bottom:6px;color:var(--text-dark);}
+.login-box-sub{font-size:14px;color:#aaa;margin-bottom:2rem;}
+
+/* ROLE TABS */
+.role-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.8rem;}
+.role-tab{padding:12px 8px;border-radius:10px;border:1.5px solid var(--border);background:white;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;text-align:center;}
+.role-tab:hover{border-color:var(--saffron);}
+.role-tab.active{background:var(--night);border-color:var(--night);color:white;}
+.role-tab .role-icon{font-size:20px;display:block;margin-bottom:4px;}
+.role-tab .role-name{font-size:12px;font-weight:700;display:block;}
+.role-tab .role-desc{font-size:10px;color:#aaa;margin-top:2px;display:block;}
+.role-tab.active .role-desc{color:rgba(255,255,255,0.5);}
+
+/* FORM */
+.form-field{margin-bottom:1rem;}
+.form-label{display:block;font-size:11px;font-weight:700;color:var(--text-mid);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;}
+.form-input{width:100%;padding:12px 14px;border:1.5px solid #e0d8c8;border-radius:8px;font-size:14px;outline:none;font-family:'Outfit',sans-serif;transition:border-color 0.2s;color:var(--text-dark);}
+.form-input:focus{border-color:var(--saffron);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.form-btn{width:100%;background:var(--crimson);color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;margin-top:6px;}
+.form-btn:hover{background:#a93226;}
+.form-divider{text-align:center;font-size:12px;color:#bbb;margin:1.2rem 0;position:relative;}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:#e8e0d0;}
+.form-divider::before{left:0;}.form-divider::after{right:0;}
+.form-switch{text-align:center;font-size:13px;color:#aaa;margin-top:1.2rem;}
+.form-switch a{color:var(--store-green);font-weight:600;text-decoration:none;}
+.staff-code-field{display:none;}
+.staff-code-field.visible{display:block;}
+.forgot-link{font-size:12px;color:var(--store-green);text-decoration:none;float:right;margin-top:-4px;}
+
+.demo-hint{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:1.2rem;font-size:12px;color:var(--text-mid);}
+.demo-hint strong{color:var(--text-dark);}
+
+footer{background:var(--store-green);color:white;padding:2rem 5rem;border-top:3px solid var(--saffron);display:flex;justify-content:space-between;align-items:center;}
+.footer-brand{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--saffron);}
+.footer-links-row{display:flex;gap:1.5rem;list-style:none;}
+.footer-links-row a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:13px;}
+@media(max-width:900px){nav{padding:0 1rem;}.nav-links{display:none;}.login-layout{grid-template-columns:1fr;}.login-left{display:none;}.login-right{padding:2.5rem 1.5rem;}.footer{flex-direction:column;gap:1rem;padding:2rem 1.5rem;}}
+</style>
+</head>
+<body>
+<div role="note" style="position:fixed;left:12px;bottom:12px;z-index:99999;background:#1B4332;color:#fff;font:600 12.5px/1.35 system-ui,sans-serif;padding:8px 12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25);max-width:260px;">Portfolio demo with a fictional brand. Not a real store.</div>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="data:image/jpeg;base64,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utfA6x8PMoaa9l1G7tOOftFuIpAB/vRmZfqwpfFkS6P8E5PDihVl028sZLo9/tM8c0rgn/ZUxp/wA153D4+u7DRPDtnp6GzvNFvJ7yG8DhyzSeXgbCuOPL75Bz0pt147utR8O63p97Gbq81XUY9RmvWcA71EgI2AY5MmeCAMdKSyzE+05/s+057X1vz79rcnS979LlPMcP7Pl+17PkvbS3Jt3vz9drdTq/iP4o1T4f8AjG48O+HryTStL0kRwLDB8q3LbFLSTDpIWYk/NkYwOlYfxc0qz07xLaXNjbpZQ6pp1rqRtYhhIXljDMqjsM5IHbOKbd+OdL8QPa3fiHQZNS1SCJIWure++zrcqgCr5y7GLHaACVZSQB35rB8U+Jbzxdrlxql7sWaXaojiXbHEigKqKOygAAfSu7A4SrRnScocrjFqT0996a6O71Td5Wav5s4sZiadWFRRnzKUk4rX3VrpqrLRpWV1p5I7zwzrHn+CNK07w74jtfDOtQTTNfpcSm2N7uYeUfOxtKhfl2MwHU85pPDniDxdoHxZ0zSr29u9Hkm1i2N7p9nMYYJGZ4wzGOM7DvXBJAwQfSuR07W9AGm2tvqfh6S5uLfcPtNlffZ2mBYsBICjg4zjK7TgAZ4qze/EGfUfiFZeKZ7OMG1uLeWOyhYqojh2hIwxyfuoBk59faspYGUp1Y+yvGSnrJRvzN6Wad7b/EtNFc1jjIxjSl7S0ouOi5rWS1umrX22euuh2OmXl947+Mr6Lr+pX+q6Pb6hd3AsLm6d4yIVlcIqkkDIXbx2JrP8D+PtW8U+OtM0rWJf7Q0TVbpLObSmA+zRpI20eVH0jK5BBXBG3rXHxeL7yx8aP4k0/wD0S8+2PeRqTvCFmLbT0yMHB9RW3ZeP9J0TVH1nR/Df2HW/maGR7zzba2dgQXih2AgjJ2hnYDjg4qKuAmoOMaV7wSjay5Za3e6te61jd+76FUsbFyUpVLWm293zR0svO1no7LX1O8h07xHp3gXQ9M8M62NNeLW9Qt3ZtUjsxPtaJVyrOvmd+AG69OadpstrH8dvFjaZINKWLTLxTOI3hEMy22JJAqjco8wM3Az6DtXlGp+LG1PwhpOiPbkNY3Nxcm5Mm4ymXZxtxxjZ1yc57V0dt8Vom1+DVr7SHubp9IfSr54rsRtdbozGJsmNtr7CAchslc1xzyzFKFT3U3JVFpZP3pXTd3Z3S025b2a1duuOY4dzp+9ZRdN63a0jZpWV1ZvXe9rrZXy/GGr6nfafDFeeOz4piEu4Wvn3riNsH58Txqvcjg55rka2NXuvD81qq6XpmpWdxvBMl5qMdwhXByNqwRnOcc57HjnjHr6rC01Sp8qi168q/wDSdD5nEzdSpzN39Ob/ANu1Ciiiuw5QooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=" alt="Saffron Market" style="height:46px;width:46px;object-fit:cover;border-radius:8px;">
+    
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="shop.html">Shop</a></li>
+    <li><a href="branches.html">Branches</a></li><li><a href="events.html">Culture & Events</a></li>
+  </ul>
+  <a href="index.html" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:13px;">← Back to site</a>
+</nav>
+
+<div class="login-layout">
+  <div class="login-left">
+    <div class="login-brand">Saffron <span>Market</span></div>
+    <div class="login-tagline">Your account — whether you're a customer, staff member, or store manager.</div>
+    <div class="login-feature"><div class="login-feature-icon">🛒</div><div class="login-feature-text"><strong>Customers</strong>Order online, track orders, save favourites across all 8 branches</div></div>
+    <div class="login-feature"><div class="login-feature-icon">👤</div><div class="login-feature-text"><strong>Staff members</strong>View your schedule, track your monthly staff discount ($500 limit), and branch info</div></div>
+    <div class="login-feature"><div class="login-feature-icon">📊</div><div class="login-feature-text"><strong>Managers & owners</strong>Full branch dashboard — sales, inventory, staff, and reporting</div></div>
+    <div class="login-langs">
+      <div class="login-langs-title">Available in</div>
+      <div class="lang-pills"><span class="lang-pill">English</span><span class="lang-pill">فارسی</span><span class="lang-pill">Español</span></div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-box">
+      <div class="login-box-title" id="formTitle">Welcome back</div>
+      <div class="login-box-sub" id="formSub">Sign in to your Saffron Market account</div>
+
+      <div class="demo-hint" id="demoHint">
+        <strong>Demo:</strong> Use any email & password. Pick a role to see its dashboard.
+      </div>
+
+      <!-- ROLE TABS -->
+      <div class="role-tabs">
+        <button class="role-tab active" onclick="selectRole('customer',this)"><span class="role-icon">🛒</span><span class="role-name">Customer</span><span class="role-desc">Shop & orders</span></button>
+        <button class="role-tab" onclick="selectRole('staff',this)"><span class="role-icon">👤</span><span class="role-name">Staff</span><span class="role-desc">Employee portal</span></button>
+        <button class="role-tab" onclick="selectRole('manager',this)"><span class="role-icon">📊</span><span class="role-name">Manager</span><span class="role-desc">Branch admin</span></button>
+      </div>
+
+      <div id="loginForm">
+        <div class="form-field">
+          <label class="form-label">Email address</label>
+          <input type="email" class="form-input" id="emailInput" placeholder="you@email.com">
+        </div>
+        <div class="form-field">
+          <label class="form-label" style="display:flex;justify-content:space-between;align-items:center;">
+            Password <a href="#" class="forgot-link">Forgot password?</a>
+          </label>
+          <input type="password" class="form-input" id="passInput" placeholder="••••••••">
+        </div>
+        <div class="form-field staff-code-field" id="staffCodeField">
+          <label class="form-label">Staff / Employee code</label>
+          <input type="text" class="form-input" placeholder="e.g. PF-2024-STAFF">
+        </div>
+        <div class="form-field" style="display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;">
+          <input type="checkbox" id="rememberMe" style="accent-color:var(--store-green);width:15px;height:15px;">
+          <label for="rememberMe" style="font-size:13px;color:var(--text-mid);">Remember me</label>
+        </div>
+        <button class="form-btn" onclick="doLogin()">Sign in</button>
+        <div class="form-divider">or</div>
+        <button class="form-btn" style="background:white;color:var(--text-dark);border:1.5px solid #e0d8c8;" onclick="showRegister()">Create new account</button>
+        <div class="form-switch">Don't have an account? <a href="#" onclick="showRegister()">Sign up free</a></div>
+      </div>
+
+      <!-- REGISTER FORM (hidden by default) -->
+      <div id="registerForm" style="display:none;">
+        <div class="form-row">
+          <div class="form-field"><label class="form-label">First name</label><input type="text" class="form-input" placeholder="Sara"></div>
+          <div class="form-field"><label class="form-label">Last name</label><input type="text" class="form-input" placeholder="Ahmadi"></div>
+        </div>
+        <div class="form-field"><label class="form-label">Email address</label><input type="email" class="form-input" placeholder="you@email.com"></div>
+        <div class="form-field"><label class="form-label">Phone number</label><input type="tel" class="form-input" placeholder="604-xxx-xxxx"></div>
+        <div class="form-field"><label class="form-label">Password</label><input type="password" class="form-input" placeholder="At least 8 characters"></div>
+        <div class="form-field">
+          <label class="form-label">Preferred branch</label>
+          <select class="form-input">
+            <option>Select your nearest branch…</option>
+            <option>Broadway — Kitsilano</option>
+            <option>Kingsway — Burnaby</option>
+            <option>Marine Dr — West Vancouver</option>
+            <option>Commercial Drive</option>
+            <option>Marine Dr — North Vancouver</option>
+            <option>Prince Edward — South Van</option>
+            <option>Main Street</option>
+            <option>Lonsdale — North Vancouver</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Preferred language</label>
+          <select class="form-input">
+            <option>English</option>
+            <option>فارسی (Persian)</option>
+            <option>Español</option>
+          </select>
+        </div>
+        <button class="form-btn" onclick="doRegister()">Create account</button>
+        <div class="form-switch">Already have an account? <a href="#" onclick="showLogin()">Sign in</a></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-brand">Saffron Market</div>
+  <ul class="footer-links-row">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="branches.html">Branches</a></li>
+    <li><a href="#">Privacy</a></li>
+  </ul>
+</footer>
+
+<script>
+let currentRole = 'customer';
+
+function selectRole(role, btn) {
+  currentRole = role;
+  document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const staffField = document.getElementById('staffCodeField');
+  if (role === 'staff' || role === 'manager') {
+    staffField.classList.add('visible');
+  } else {
+    staffField.classList.remove('visible');
+  }
+}
+
+function doLogin() {
+  const email = document.getElementById('emailInput').value;
+  const pass = document.getElementById('passInput').value;
+  if (!email || !pass) { alert('Please enter your email and password.'); return; }
+  // Demo redirect based on role
+  if (currentRole === 'staff') window.location.href = 'account-staff.html';
+  else if (currentRole === 'manager') window.location.href = 'account-manager.html';
+  else window.location.href = 'account-customer.html';
+}
+
+function showRegister() {
+  document.getElementById('loginForm').style.display = 'none';
+  document.getElementById('registerForm').style.display = 'block';
+  document.getElementById('formTitle').textContent = 'Create your account';
+  document.getElementById('formSub').textContent = 'Join Saffron Market — it\'s free';
+  document.getElementById('demoHint').style.display = 'none';
+}
+
+function showLogin() {
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerForm').style.display = 'none';
+  document.getElementById('formTitle').textContent = 'Welcome back';
+  document.getElementById('formSub').textContent = 'Sign in to your Saffron Market account';
+  document.getElementById('demoHint').style.display = 'block';
+}
+
+function doRegister() {
+  alert('Account created! Welcome to Saffron Market. Redirecting to your dashboard…');
+  window.location.href = 'account-customer.html';
+}
+
+// Check URL param
+const params = new URLSearchParams(window.location.search);
+if (params.get('mode') === 'register') showRegister();
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>

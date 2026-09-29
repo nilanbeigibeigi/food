@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B5E35">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Saffron Market — Vancouver's Freshest Grocery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #C0392B;
+    --saffron: #E8A020;
+    --gold: #F5C842;
+    --forest: #1A6B3A;
+    --forest-light: #25A865;
+    --teal-dark: #0D4A2E;
+    --store-green: #1B5E35;
+    --night: #0F1A0F;
+    --cream: #FDF6E3;
+    --warm-white: #FFFCF5;
+    --text-dark: #1A1008;
+    --text-mid: #5C4A2A;
+    --border: rgba(200,160,60,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--warm-white);
+    color: var(--text-dark);
+    overflow-x: hidden;
+  }
+  
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--store-green);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    border-bottom: 3px solid var(--saffron);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo-badge {
+    width: 38px; height: 38px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px; font-weight: 700;
+    color: white; letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .nav-logo-text .sub { font-size: 11px; color: rgba(255,255,255,0.45); font-weight: 400; letter-spacing: 0.04em; display: block; font-family: 'Outfit', sans-serif; }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.8); text-decoration: none;
+    font-size: 14px; font-weight: 500; letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--saffron); }
+
+  .nav-lang {
+    display: flex; gap: 6px;
+  }
+  .lang-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.7); font-size: 12px; padding: 4px 10px;
+    border-radius: 20px; cursor: pointer; font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+  }
+  .lang-btn.active, .lang-btn:hover {
+    background: var(--saffron); border-color: var(--saffron); color: var(--night);
+  }
+
+  .nav-actions {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .btn-login {
+    background: transparent; border: 1.5px solid var(--saffron);
+    color: var(--saffron); padding: 7px 18px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Outfit', sans-serif; transition: all 0.2s;
+  }
+  .btn-login:hover { background: var(--saffron); color: var(--night); }
+
+  .btn-signup {
+    background: var(--crimson); border: none;
+    color: white; padding: 8px 18px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    font-family: 'Outfit', sans-serif; transition: all 0.2s;
+  }
+  .btn-signup:hover { background: #a93226; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,20,10,0.7)), url('store-photo.jpg') center/cover no-repeat;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding-top: 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(192,57,43,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(232,160,32,0.12) 0%, transparent 40%),
+      radial-gradient(circle at 60% 80%, rgba(26,122,74,0.1) 0%, transparent 35%);
+    pointer-events: none;
+  }
+
+  /* Persian geometric pattern overlay */
+  .hero-geo {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 52%;
+    opacity: 0.06;
+    background-image:
+      repeating-linear-gradient(45deg, var(--saffron) 0, var(--saffron) 1px, transparent 0, transparent 50%),
+      repeating-linear-gradient(-45deg, var(--saffron) 0, var(--saffron) 1px, transparent 0, transparent 50%);
+    background-size: 30px 30px;
+    pointer-events: none;
+  }
+
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 4rem 3rem 4rem 5rem;
+    position: relative; z-index: 2;
+  }
+
+  .hero-since {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.3);
+    color: var(--saffron); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 6px 14px; border-radius: 20px; margin-bottom: 1.5rem;
+    width: fit-content;
+  }
+  .hero-since::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--saffron); display: block;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    font-weight: 900;
+    color: white;
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+  }
+  .hero-title .accent { color: var(--saffron); display: block; }
+  .hero-title .accent2 { color: var(--forest-light); }
+
+  .hero-subtitle {
+    font-size: 17px; color: rgba(255,255,255,0.65);
+    line-height: 1.7; max-width: 420px; margin-bottom: 2.5rem;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 3rem;
+  }
+
+  .cta-primary {
+    background: var(--saffron); color: var(--night);
+    border: none; padding: 14px 28px; border-radius: 8px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .cta-primary:hover { background: var(--gold); transform: translateY(-2px); }
+
+  .cta-secondary {
+    background: transparent; color: white;
+    border: 1.5px solid rgba(255,255,255,0.3); padding: 14px 28px;
+    border-radius: 8px; font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+  }
+  .cta-secondary:hover { border-color: white; background: rgba(255,255,255,0.07); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem;
+  }
+  .hero-stat { }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: var(--saffron);
+  }
+  .hero-stat-label {
+    font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .hero-right {
+    display: flex; align-items: center; justify-content: center;
+    padding: 4rem 3rem 4rem 2rem;
+    position: relative; z-index: 2;
+  }
+
+  /* Floating product showcase */
+  .product-showcase {
+    position: relative; width: 380px; height: 420px;
+  }
+
+  .showcase-card {
+    position: absolute;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    animation: float 6s ease-in-out infinite;
+  }
+  .showcase-card:nth-child(2) { animation-delay: -2s; }
+  .showcase-card:nth-child(3) { animation-delay: -4s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .card-main {
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 200px;
+    background: white;
+    border: none;
+    color: var(--text-dark);
+    z-index: 3;
+    animation: float 5s ease-in-out infinite;
+  }
+
+  .card-a {
+    top: 8%; left: 5%;
+    width: 150px;
+  }
+
+  .card-b {
+    bottom: 8%; right: 2%;
+    width: 160px;
+  }
+
+  .showcase-emoji {
+    font-size: 36px; margin-bottom: 8px; display: block;
+  }
+  .showcase-name {
+    font-size: 13px; font-weight: 600;
+    color: var(--text-dark);
+  }
+  .card-main .showcase-name { color: var(--text-dark); }
+  .card-a .showcase-name, .card-b .showcase-name { color: white; }
+
+  .showcase-price {
+    font-size: 16px; font-weight: 700; color: var(--forest);
+    margin-top: 4px;
+  }
+  .card-a .showcase-price, .card-b .showcase-price { color: var(--gold); }
+
+  .showcase-tag {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 20px; margin-top: 6px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .tag-fresh { background: #E8F5E9; color: #2E7D32; }
+  .tag-sale { background: var(--crimson); color: white; }
+  .tag-new { background: var(--saffron); color: var(--night); }
+
+  /* ── SEARCH BAR ── */
+  .search-section {
+    background: var(--saffron);
+    padding: 1.5rem 5rem;
+  }
+  .search-inner {
+    display: flex; gap: 12px; max-width: 900px; margin: 0 auto;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1; display: flex; align-items: center;
+    background: white; border-radius: 10px;
+    padding: 0 16px; gap: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .search-icon { font-size: 18px; }
+  .search-input {
+    flex: 1; border: none; outline: none;
+    font-size: 15px; font-family: 'Outfit', sans-serif;
+    padding: 14px 0; color: var(--text-dark);
+    background: transparent;
+  }
+  .search-input::placeholder { color: #aaa; }
+
+  .voice-btn {
+    background: var(--crimson); border: none; color: white;
+    width: 46px; height: 46px; border-radius: 8px;
+    font-size: 18px; cursor: pointer; flex-shrink: 0;
+    transition: all 0.2s; display: flex; align-items: center; justify-content: center;
+  }
+  .voice-btn:hover { background: #a93226; transform: scale(1.05); }
+  .voice-btn.listening {
+    background: var(--crimson);
+    animation: voice-pulse 1s infinite;
+  }
+  @keyframes voice-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0.5); }
+    50% { box-shadow: 0 0 0 10px rgba(192,57,43,0); }
+  }
+
+  .search-btn {
+    background: var(--night); color: white; border: none;
+    padding: 14px 24px; border-radius: 10px; font-size: 14px;
+    font-weight: 600; cursor: pointer; font-family: 'Outfit', sans-serif;
+    white-space: nowrap; transition: all 0.2s;
+  }
+  .search-btn:hover { background: #2c1a0a; }
+
+  .voice-status {
+    font-size: 13px; color: var(--night); font-weight: 500; min-width: 120px;
+  }
+
+  /* ── SECTIONS ── */
+  .section { padding: 5rem 5rem; }
+  .section-alt { background: var(--cream); }
+
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-label {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--crimson);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--text-dark);
+    line-height: 1.2;
+  }
+  .see-all {
+    color: var(--forest); font-size: 14px; font-weight: 600;
+    text-decoration: none; border-bottom: 2px solid var(--forest);
+    padding-bottom: 2px; transition: all 0.2s; white-space: nowrap;
+  }
+  .see-all:hover { color: var(--forest-light); }
+
+  /* ── CATEGORIES ── */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+  }
+
+  .cat-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none; color: inherit;
+  }
+  .cat-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--saffron);
+    box-shadow: 0 8px 30px rgba(232,160,32,0.15);
+  }
+  .cat-emoji { font-size: 32px; margin-bottom: 10px; display: block; }
+  .cat-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+  .cat-count { font-size: 11px; color: #999; margin-top: 2px; }
+
+  /* ── PRODUCTS GRID ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 18px;
+  }
+
+  .product-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+    border-color: var(--saffron);
+  }
+
+  .product-img {
+    height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 56px;
+    position: relative;
+  }
+
+  .product-badge {
+    position: absolute; top: 10px; left: 10px;
+    font-size: 10px; font-weight: 700; padding: 3px 9px;
+    border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .badge-sale { background: var(--crimson); color: white; }
+  .badge-new { background: var(--forest); color: white; }
+  .badge-hot { background: var(--saffron); color: var(--night); }
+
+  .product-info { padding: 14px; }
+  .product-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: var(--text-dark); }
+  .product-origin { font-size: 11px; color: #aaa; margin-bottom: 10px; }
+  .product-footer {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .product-price { font-size: 16px; font-weight: 700; color: var(--forest); }
+  .product-price .old { font-size: 12px; color: #bbb; text-decoration: line-through; margin-left: 4px; font-weight: 400; }
+  .add-btn {
+    width: 32px; height: 32px; background: var(--saffron);
+    border: none; border-radius: 8px; font-size: 18px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; color: var(--night); font-weight: 700;
+  }
+  .add-btn:hover { background: var(--gold); transform: scale(1.1); }
+
+  /* ── BRANCHES ── */
+  .branches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+
+  .branch-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative; overflow: hidden;
+  }
+  .branch-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 4px;
+  }
+  .branch-card.c1::before { background: var(--crimson); }
+  .branch-card.c2::before { background: var(--saffron); }
+  .branch-card.c3::before { background: var(--forest); }
+  .branch-card.c4::before { background: #9B59B6; }
+  .branch-card.c5::before { background: #2980B9; }
+  .branch-card.c6::before { background: #E74C3C; }
+  .branch-card.c7::before { background: #27AE60; }
+  .branch-card.c8::before { background: var(--saffron); }
+
+  .branch-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 35px rgba(0,0,0,0.1);
+  }
+
+  .branch-name { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+  .branch-addr { font-size: 13px; color: #888; margin-bottom: 12px; line-height: 1.5; }
+  .branch-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .branch-tag {
+    font-size: 11px; background: var(--cream);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 3px 10px; color: var(--text-mid);
+  }
+  .branch-hours {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--forest); font-weight: 600;
+  }
+
+  /* ── CULTURE EVENTS ── */
+  .events-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .event-card {
+    border-radius: 16px; overflow: hidden;
+    position: relative; cursor: pointer;
+    min-height: 240px; display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 1.5rem;
+    transition: transform 0.25s;
+  }
+  .event-card:hover { transform: scale(1.02); }
+
+  .event-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 100px; opacity: 0.25;
+  }
+  .event-card.ev1 { background: linear-gradient(135deg, #8E1A0E, #C0392B); }
+  .event-card.ev2 { background: linear-gradient(135deg, #5D4037, #8D6E63); }
+  .event-card.ev3 { background: linear-gradient(135deg, #1B5E20, #2E7D32); }
+
+  .event-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: rgba(255,255,255,0.6);
+    margin-bottom: 6px; position: relative; z-index: 1;
+  }
+  .event-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; color: white;
+    margin-bottom: 8px; position: relative; z-index: 1;
+  }
+  .event-desc {
+    font-size: 13px; color: rgba(255,255,255,0.75);
+    position: relative; z-index: 1; line-height: 1.5;
+  }
+  .event-tag {
+    display: inline-block; background: rgba(255,255,255,0.2);
+    color: white; font-size: 11px; padding: 4px 12px;
+    border-radius: 20px; margin-top: 10px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── AI CHATBOT ── */
+  .chatbot-float {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+  }
+  .chat-toggle {
+    width: 58px; height: 58px;
+    background: linear-gradient(135deg, var(--crimson), var(--saffron));
+    border: none; border-radius: 50%; cursor: pointer;
+    font-size: 24px; color: white;
+    box-shadow: 0 6px 25px rgba(192,57,43,0.45);
+    transition: all 0.3s; display: flex; align-items: center; justify-content: center;
+  }
+  .chat-toggle:hover { transform: scale(1.1); }
+
+  .chat-window {
+    position: absolute; bottom: 72px; right: 0;
+    width: 320px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    border: 1.5px solid var(--border);
+  }
+  .chat-window.open { display: flex; }
+
+  .chat-header {
+    background: var(--store-green); color: white;
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .chat-avatar {
+    width: 36px; height: 36px; background: linear-gradient(135deg, var(--saffron), var(--crimson));
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .chat-header-info { flex: 1; }
+  .chat-name { font-size: 14px; font-weight: 600; }
+  .chat-online { font-size: 11px; color: #4CAF50; }
+
+  .chat-messages {
+    flex: 1; padding: 14px; max-height: 280px;
+    overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+    min-height: 200px;
+  }
+  .msg { max-width: 85%; }
+  .msg-bot {
+    background: var(--cream); border-radius: 0 12px 12px 12px;
+    padding: 10px 14px; font-size: 13px; line-height: 1.5;
+    color: var(--text-dark); align-self: flex-start;
+  }
+  .msg-user {
+    background: var(--crimson); color: white;
+    border-radius: 12px 0 12px 12px;
+    padding: 10px 14px; font-size: 13px; line-height: 1.5;
+    align-self: flex-end;
+  }
+  .msg-fa {
+    font-size: 13px; direction: rtl; text-align: right;
+  }
+
+  .chat-input-row {
+    padding: 10px 12px;
+    display: flex; gap: 8px; align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .chat-input {
+    flex: 1; border: 1px solid #e0d8c8; border-radius: 20px;
+    padding: 8px 14px; font-size: 13px; outline: none;
+    font-family: 'Outfit', sans-serif;
+  }
+  .chat-send {
+    background: var(--saffron); border: none; color: var(--night);
+    width: 34px; height: 34px; border-radius: 50%;
+    font-size: 14px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .chat-send:hover { background: var(--gold); }
+
+  .chat-suggestions {
+    padding: 0 12px 10px;
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .sugg-btn {
+    background: var(--cream); border: 1px solid var(--border);
+    font-size: 11px; padding: 4px 10px; border-radius: 20px;
+    cursor: pointer; color: var(--text-mid); font-family: 'Outfit', sans-serif;
+    transition: all 0.2s;
+  }
+  .sugg-btn:hover { background: var(--saffron); color: var(--night); border-color: var(--saffron); }
+
+  /* ── STAFF DISCOUNT BANNER ── */
+  .staff-bar {
+    background: var(--forest);
+    color: white; padding: 1rem 5rem;
+    display: none; align-items: center;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .staff-bar.visible { display: flex; }
+  .staff-bar-text { font-size: 14px; }
+  .staff-bar-text strong { font-weight: 700; }
+  .discount-bar-outer {
+    flex: 1; min-width: 160px; max-width: 300px;
+    height: 8px; background: rgba(255,255,255,0.2);
+    border-radius: 10px; overflow: hidden;
+  }
+  .discount-bar-inner {
+    height: 100%; background: var(--gold); border-radius: 10px;
+    transition: width 0.6s ease;
+  }
+  .staff-bar-amount { font-size: 14px; font-weight: 700; white-space: nowrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--store-green); color: white; padding: 4rem 5rem 2rem;
+    border-top: 3px solid var(--saffron);
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; margin-bottom: 3rem;
+  }
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px; font-weight: 700; margin-bottom: 12px;
+    color: var(--saffron);
+  }
+  .footer-tagline {
+    font-size: 14px; color: rgba(255,255,255,0.55);
+    line-height: 1.7; margin-bottom: 1.5rem;
+  }
+  .footer-contact { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 2; }
+  .footer-contact strong { color: rgba(255,255,255,0.8); }
+  .footer-col-title { font-size: 13px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--saffron); margin-bottom: 1rem; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--saffron); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: rgba(255,255,255,0.35);
+  }
+  .payment-icons { display: flex; gap: 8px; }
+  .pay-icon {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px; padding: 4px 10px; font-size: 11px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* Modal login */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 300; display: none;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white; border-radius: 20px;
+    width: 100%; max-width: 400px; overflow: hidden;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+  }
+  .modal-top {
+    background: var(--store-green); padding: 2rem;
+    text-align: center; position: relative;
+  }
+  .modal-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700; color: var(--saffron);
+    margin-bottom: 6px;
+  }
+  .modal-sub { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .modal-close {
+    position: absolute; top: 14px; right: 16px;
+    background: none; border: none; color: rgba(255,255,255,0.5);
+    font-size: 20px; cursor: pointer;
+  }
+  .modal-body { padding: 2rem; }
+  .role-tabs {
+    display: flex; gap: 8px; margin-bottom: 1.5rem;
+  }
+  .role-tab {
+    flex: 1; padding: 8px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: white;
+    font-size: 12px; font-weight: 600; cursor: pointer;
+    color: var(--text-mid); font-family: 'Outfit', sans-serif;
+    transition: all 0.2s; text-align: center;
+  }
+  .role-tab.active {
+    background: var(--night); color: white; border-color: var(--night);
+  }
+  .form-field { margin-bottom: 1rem; }
+  .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--text-mid); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .form-input {
+    width: 100%; padding: 11px 14px; border: 1.5px solid #e0d8c8;
+    border-radius: 8px; font-size: 14px; outline: none;
+    font-family: 'Outfit', sans-serif; transition: border-color 0.2s;
+    color: var(--text-dark);
+  }
+  .form-input:focus { border-color: var(--saffron); }
+  .form-btn {
+    width: 100%; background: var(--crimson); color: white;
+    border: none; padding: 13px; border-radius: 8px;
+    font-size: 15px; font-weight: 700; cursor: pointer;
+    font-family: 'Outfit', sans-serif; transition: all 0.2s; margin-top: 4px;
+  }
+  .form-btn:hover { background: #a93226; }
+  .form-divider { text-align: center; font-size: 12px; color: #bbb; margin: 1rem 0; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 3rem 2rem; }
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .section { padding: 3rem 1.5rem; }
+    .search-section { padding: 1.5rem; }
+    .events-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .staff-bar { padding: 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<div role="note" style="position:fixed;left:12px;bottom:12px;z-index:99999;background:#1B4332;color:#fff;font:600 12.5px/1.35 system-ui,sans-serif;padding:8px 12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25);max-width:260px;">Portfolio demo with a fictional brand. Not a real store.</div>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./service-worker.js")
+    .then(() => console.log("Service Worker Registered"))
+    .catch(err => console.log("Service Worker Error:", err));
+}
+</script>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="data:image/jpeg;base64,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utfA6x8PMoaa9l1G7tOOftFuIpAB/vRmZfqwpfFkS6P8E5PDihVl028sZLo9/tM8c0rgn/ZUxp/wA153D4+u7DRPDtnp6GzvNFvJ7yG8DhyzSeXgbCuOPL75Bz0pt147utR8O63p97Gbq81XUY9RmvWcA71EgI2AY5MmeCAMdKSyzE+05/s+057X1vz79rcnS979LlPMcP7Pl+17PkvbS3Jt3vz9drdTq/iP4o1T4f8AjG48O+HryTStL0kRwLDB8q3LbFLSTDpIWYk/NkYwOlYfxc0qz07xLaXNjbpZQ6pp1rqRtYhhIXljDMqjsM5IHbOKbd+OdL8QPa3fiHQZNS1SCJIWure++zrcqgCr5y7GLHaACVZSQB35rB8U+Jbzxdrlxql7sWaXaojiXbHEigKqKOygAAfSu7A4SrRnScocrjFqT0996a6O71Td5Wav5s4sZiadWFRRnzKUk4rX3VrpqrLRpWV1p5I7zwzrHn+CNK07w74jtfDOtQTTNfpcSm2N7uYeUfOxtKhfl2MwHU85pPDniDxdoHxZ0zSr29u9Hkm1i2N7p9nMYYJGZ4wzGOM7DvXBJAwQfSuR07W9AGm2tvqfh6S5uLfcPtNlffZ2mBYsBICjg4zjK7TgAZ4qze/EGfUfiFZeKZ7OMG1uLeWOyhYqojh2hIwxyfuoBk59faspYGUp1Y+yvGSnrJRvzN6Wad7b/EtNFc1jjIxjSl7S0ouOi5rWS1umrX22euuh2OmXl947+Mr6Lr+pX+q6Pb6hd3AsLm6d4yIVlcIqkkDIXbx2JrP8D+PtW8U+OtM0rWJf7Q0TVbpLObSmA+zRpI20eVH0jK5BBXBG3rXHxeL7yx8aP4k0/wD0S8+2PeRqTvCFmLbT0yMHB9RW3ZeP9J0TVH1nR/Df2HW/maGR7zzba2dgQXih2AgjJ2hnYDjg4qKuAmoOMaV7wSjay5Za3e6te61jd+76FUsbFyUpVLWm293zR0svO1no7LX1O8h07xHp3gXQ9M8M62NNeLW9Qt3ZtUjsxPtaJVyrOvmd+AG69OadpstrH8dvFjaZINKWLTLxTOI3hEMy22JJAqjco8wM3Az6DtXlGp+LG1PwhpOiPbkNY3Nxcm5Mm4ymXZxtxxjZ1yc57V0dt8Vom1+DVr7SHubp9IfSr54rsRtdbozGJsmNtr7CAchslc1xzyzFKFT3U3JVFpZP3pXTd3Z3S025b2a1duuOY4dzp+9ZRdN63a0jZpWV1ZvXe9rrZXy/GGr6nfafDFeeOz4piEu4Wvn3riNsH58Txqvcjg55rka2NXuvD81qq6XpmpWdxvBMl5qMdwhXByNqwRnOcc57HjnjHr6rC01Sp8qi168q/wDSdD5nEzdSpzN39Ob/ANu1Ciiiuw5QooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=" alt="Saffron Market" style="height:48px;width:48px;object-fit:cover;border-radius:8px;">
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="branches.html">Branches</a></li>
+    <li><a href="shop.html">Offers</a></li>
+    <li><a href="events.html">Culture & Events</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="nav-lang">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('fa')">فا</button>
+    </div>
+    <div class="nav-actions">
+      <a href="login.html" class="btn-login" style="text-decoration:none;">Sign in</a>
+      <a href="login.html?mode=register" class="btn-signup" style="text-decoration:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:600;font-family:'Outfit',sans-serif;">Join free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- STAFF DISCOUNT BAR (shown when logged in as staff) -->
+<div class="staff-bar" id="staffBar" style="margin-top:64px;">
+  <div class="staff-bar-text">👋 Welcome back, <strong>Sara</strong> — Staff discount this month:</div>
+  <div class="discount-bar-outer"><div class="discount-bar-inner" style="width:62%"></div></div>
+  <div class="staff-bar-amount">$310 / $500 used</div>
+</div>
+
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-geo"></div>
+
+  <div class="hero-left">
+    <div class="hero-since">
+      Eat Well. Save Money.
+    </div>
+    <h1 class="hero-title">
+      Taste of<br>
+      <span class="accent">Iran, <span class="accent2">Fresh</span></span>
+      every day
+    </h1>
+    <p class="hero-subtitle">
+      Authentic Persian groceries, halal meats, spices, sweets and seasonal produce — across 8 locations in Greater Vancouver.<br>
+      <span style="font-size:13px;opacity:0.6;margin-top:6px;display:block;">سوپرمارکت زعفران · el mercado azafrán · 藏红花市场</span>
+    </p>
+    <div class="hero-ctas">
+      <a href="shop.html" class="cta-primary" style="text-decoration:none;display:inline-block;">Shop Now</a>
+      <a href="branches.html" class="cta-secondary" style="text-decoration:none;display:inline-block;">Find a Branch</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num">8</div>
+        <div class="hero-stat-label">Branches</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">5+</div>
+        <div class="hero-stat-label">Years open</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">1000s</div>
+        <div class="hero-stat-label">Products</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="product-showcase">
+      <div class="showcase-card card-a">
+        <span class="showcase-emoji">🌿</span>
+        <div class="showcase-name">Fresh Herbs</div>
+        <div class="showcase-price">$1.99 /bunch</div>
+        <span class="showcase-tag tag-fresh">Fresh daily</span>
+      </div>
+      <div class="showcase-card card-main">
+        <span class="showcase-emoji">🍇</span>
+        <div class="showcase-name">Persian Dates Mazafati</div>
+        <div class="showcase-price" style="color:var(--crimson);">$8.99</div>
+        <span class="showcase-tag tag-hot" style="background:#fff3cd;color:#856404;">⭐ Best seller</span>
+      </div>
+      <div class="showcase-card card-b">
+        <span class="showcase-emoji">🍞</span>
+        <div class="showcase-name">Sangak Bread</div>
+        <div class="showcase-price">$3.49</div>
+        <span class="showcase-tag tag-new">Baked today</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- STORE PHOTO STRIP -->
+<div style="background:var(--night);padding:0;overflow:hidden;height:220px;position:relative;">
+  <div style="position:absolute;inset:0;background:linear-gradient(to right, rgba(15,26,15,0.85) 0%, rgba(15,26,15,0.3) 50%, rgba(15,26,15,0.7) 100%);z-index:2;"></div>
+  <!-- Real store represented as styled banner since we can't embed uploaded images in HTML files -->
+  <div style="position:absolute;inset:0;background:var(--store-green);display:flex;align-items:center;justify-content:center;z-index:1;">
+    <div style="text-align:center;z-index:3;position:relative;">
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,4rem);font-weight:900;color:white;letter-spacing:0.08em;text-shadow:0 2px 20px rgba(0,0,0,0.5);">
+        ✦ SAFFRON MARKET ✦
+      </div>
+      <div style="display:flex;gap:2rem;justify-content:center;margin-top:10px;flex-wrap:wrap;">
+        <span style="color:rgba(255,255,255,0.7);font-size:14px;">سوپرمارکت زعفران</span>
+        <span style="color:var(--saffron);font-size:14px;">·</span>
+        <span style="color:rgba(255,255,255,0.7);font-size:14px;">el mercado azafrán</span>
+        <span style="color:var(--saffron);font-size:14px;">·</span>
+        <span style="color:rgba(255,255,255,0.7);font-size:14px;">藏红花市场</span>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:12px;padding:4px 14px;border-radius:20px;">📍 8 Locations across Greater Vancouver</span>
+        <span style="background:rgba(232,160,32,0.15);border:1px solid rgba(232,160,32,0.35);color:var(--saffron);font-size:12px;padding:4px 14px;border-radius:20px;">⭐ Feeding Vancouver</span>
+        <span style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;font-size:12px;padding:4px 14px;border-radius:20px;">🕘 Open daily 9am – 9pm</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-inner">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search products — e.g. rice, saffron, feta cheese…">
+    </div>
+    <button class="voice-btn" id="voiceBtn" title="Voice search (English or Persian)" onclick="startVoice()">🎙️</button>
+    <button class="search-btn">Search</button>
+    <span class="voice-status" id="voiceStatus"></span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="section section-alt">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Browse by category</div>
+      <h2 class="section-title">What are you looking for?</h2>
+    </div>
+    <a href="shop.html" class="see-all">See all categories →</a>
+  </div>
+  <div class="categories-grid">
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🥩</span><div class="cat-name">Halal Meat</div><div class="cat-count">Fresh daily</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🍚</span><div class="cat-name">Rice & Grains</div><div class="cat-count">Persian varieties</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🌿</span><div class="cat-name">Fresh Herbs</div><div class="cat-count">Grown locally</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🧀</span><div class="cat-name">Dairy</div><div class="cat-count">Traditional feta, yogurt</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🫖</span><div class="cat-name">Teas & Drinks</div><div class="cat-count">Persian teas</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🍬</span><div class="cat-name">Sweets</div><div class="cat-count">Baklava & more</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🥫</span><div class="cat-name">Pickles & Jams</div><div class="cat-count">Traditional preserves</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🌶️</span><div class="cat-name">Spices & Herbs</div><div class="cat-count">Saffron, turmeric…</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🍞</span><div class="cat-name">Bread</div><div class="cat-count">Sangak, lavash…</div></a>
+    <a href="shop.html" class="cat-card"><span class="cat-emoji">🥦</span><div class="cat-name">Vegetables</div><div class="cat-count">From local farms</div></a>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="section" id="shop">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Today's picks</div>
+      <h2 class="section-title">Featured products</h2>
+    </div>
+    <a href="shop.html" class="see-all">View all products →</a>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="product-img" style="background:#FFF9E6;">🌾<span class="product-badge badge-hot">Top Pick</span></div>
+      <div class="product-info">
+        <div class="product-name">Basmati Rice — Extra Long</div>
+        <div class="product-origin">Persian variety · 5kg bag</div>
+        <div class="product-footer">
+          <div class="product-price">$18.99</div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#FFF0E6;">🧅<span class="product-badge badge-sale">Sale</span></div>
+      <div class="product-info">
+        <div class="product-name">Saffron — Premium Grade</div>
+        <div class="product-origin">Iranian · 1g jar</div>
+        <div class="product-footer">
+          <div class="product-price">$12.49 <span class="old">$16.00</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#E8F5E9;">🥬<span class="product-badge badge-new">New</span></div>
+      <div class="product-info">
+        <div class="product-name">Mixed Greens — Local Farm</div>
+        <div class="product-origin">BC grown · 200g</div>
+        <div class="product-footer">
+          <div class="product-price">$3.99</div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#FCE4EC;">🧀</div>
+      <div class="product-info">
+        <div class="product-name">Feta Cheese — Brine</div>
+        <div class="product-origin">Traditional · 400g</div>
+        <div class="product-footer">
+          <div class="product-price">$7.29</div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#FFF8E1;">🍯<span class="product-badge badge-hot">Popular</span></div>
+      <div class="product-info">
+        <div class="product-name">Wild Honey — Mountain</div>
+        <div class="product-origin">Iranian highlands · 500g</div>
+        <div class="product-footer">
+          <div class="product-price">$14.99</div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#E8F5E9;">🌿<span class="product-badge badge-sale">Sale</span></div>
+      <div class="product-info">
+        <div class="product-name">Dried Fenugreek</div>
+        <div class="product-origin">Spice · 100g pack</div>
+        <div class="product-footer">
+          <div class="product-price">$2.99 <span class="old">$4.50</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#FFF3E0;">🍞</div>
+      <div class="product-info">
+        <div class="product-name">Sangak Bread</div>
+        <div class="product-origin">Baked in-store · whole</div>
+        <div class="product-footer">
+          <div class="product-price">$3.49</div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img" style="background:#E3F2FD;">🫖</div>
+      <div class="product-info">
+        <div class="product-name">Persian Black Tea</div>
+        <div class="product-origin">Lahijan · 500g loose leaf</div>
+        <div class="product-footer">
+          <div class="product-price">$9.99</div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BRANCHES -->
+<section class="section section-alt" id="branches">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Find us near you</div>
+      <h2 class="section-title">Our 8 branches</h2>
+    </div>
+    <a href="branches.html" class="see-all">View map →</a>
+  </div>
+  <div class="branches-grid">
+    <div class="branch-card c1">
+      <div class="branch-name">Broadway — Kitsilano</div>
+      <div class="branch-addr">Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Full grocery</span><span class="branch-tag">Halal meat</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c2">
+      <div class="branch-name">Kingsway — Burnaby</div>
+      <div class="branch-addr">Burnaby, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Full grocery</span><span class="branch-tag">Bakery</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c3">
+      <div class="branch-name">Marine Dr — West Vancouver</div>
+      <div class="branch-addr">West Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Produce</span><span class="branch-tag">Specialty</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c4">
+      <div class="branch-name">Commercial Drive</div>
+      <div class="branch-addr">Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Full grocery</span><span class="branch-tag">Deli</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c5">
+      <div class="branch-name">Marine Dr — North Vancouver</div>
+      <div class="branch-addr">North Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Halal meat</span><span class="branch-tag">Produce</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c6">
+      <div class="branch-name">Prince Edward — South Van</div>
+      <div class="branch-addr">Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Full grocery</span><span class="branch-tag">Sweets</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c7">
+      <div class="branch-name">Main Street</div>
+      <div class="branch-addr">Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Produce</span><span class="branch-tag">Bakery</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+    <div class="branch-card c8">
+      <div class="branch-name">Lonsdale — North Vancouver</div>
+      <div class="branch-addr">North Vancouver, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Superstore format</span><span class="branch-tag">New</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 10pm</div>
+    </div>
+    <div class="branch-card" style="border-top:4px solid #E74C3C;">
+      <div class="branch-name">Port Coquitlam</div>
+      <div class="branch-addr">Port Coquitlam, BC</div>
+      <div class="branch-tags"><span class="branch-tag">Full grocery</span><span class="branch-tag">Exotic items</span></div>
+      <div class="branch-hours">🕘 Mon–Sun: 9am – 9pm</div>
+    </div>
+  </div>
+</section>
+
+<!-- CULTURE & EVENTS -->
+<section class="section">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Community & culture</div>
+      <h2 class="section-title">Seasonal & cultural events</h2>
+    </div>
+  </div>
+  <div class="events-grid">
+    <div class="event-card ev1">
+      <div class="event-bg">🌸</div>
+      <div class="event-label">Persian New Year</div>
+      <div class="event-title">Nowruz Celebration</div>
+      <div class="event-desc">Special Haft-Sin table spreads, traditional sweets, and seasonal produce for the Persian New Year.</div>
+      <span class="event-tag">Coming Soon — March 20</span>
+    </div>
+    <div class="event-card ev2">
+      <div class="event-bg">🌙</div>
+      <div class="event-label">Religious holiday</div>
+      <div class="event-title">Eid al-Fitr Offers</div>
+      <div class="event-desc">Special discounts on halal meats and festive sweets for Eid celebrations.</div>
+      <span class="event-tag">Active</span>
+    </div>
+    <div class="event-card ev3">
+      <div class="event-bg">🍂</div>
+      <div class="event-label">Monthly deals</div>
+      <div class="event-title">April Fresh Picks</div>
+      <div class="event-desc">New seasonal produce arriving across all 8 branches this month.</div>
+      <span class="event-tag">This month</span>
+    </div>
+  </div>
+</section>
+
+<!-- GOOGLE REVIEWS -->
+<section class="section section-alt" id="reviews">
+  <div class="section-header">
+    <div>
+      <div class="section-label">What customers say</div>
+      <h2 class="section-title">Google Maps reviews</h2>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:22px;font-weight:700;color:var(--text-dark);">4.4</span>
+      <div>
+        <div style="color:var(--saffron);font-size:16px;">★★★★☆</div>
+        <div style="font-size:12px;color:#aaa;">across all branches</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;">
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar" style="background:#E8F5E9;color:#2E7D32;">K</div>
+        <div>
+          <div class="reviewer-name">Kingsway Branch</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-text">"Great variety fresh products reasonable priced"</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar" style="background:#E3F2FD;color:#1565C0;">V</div>
+        <div>
+          <div class="reviewer-name">Vancouver Branch</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-text">"Friendly people, authentic middle Eastern foods, fresh produce, good prices"</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar" style="background:#FFF8E1;color:#F57F17;">N</div>
+        <div>
+          <div class="reviewer-name">North Vancouver</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-text">"Consistently well priced fresh fruit and vegetables with friendly staff."</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar" style="background:#FCE4EC;color:#880E4F;">W</div>
+        <div>
+          <div class="reviewer-name">West Vancouver</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-text">"Great fresh food at a very reasonable price"</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar" style="background:#E8EAF6;color:#283593;">P</div>
+        <div>
+          <div class="reviewer-name">Port Coquitlam</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-text">"Good prices excellent staff products from every day to exotic!"</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer-avatar" style="background:#E0F2F1;color:#00695C;">S</div>
+        <div>
+          <div class="reviewer-name">Vancouver Branch</div>
+          <div class="review-stars">★★★★★</div>
+        </div>
+        <div class="review-source">Google</div>
+      </div>
+      <div class="review-text">"Fresh produce, reasonable price and friendly staff"</div>
+    </div>
+
+  </div>
+
+  <!-- Notice banner -->
+  <div style="margin-top:2rem;background:var(--cream);border:1.5px solid rgba(192,57,43,0.2);border-left:4px solid var(--crimson);border-radius:10px;padding:1rem 1.4rem;display:flex;gap:12px;align-items:flex-start;">
+    <span style="font-size:18px;flex-shrink:0;">ℹ️</span>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:var(--crimson);margin-bottom:4px;">Store hours notice</div>
+      <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">Hours may vary on public holidays (e.g. Good Friday, Nowruz, Eid). Please call your local branch or check Google Maps for real-time hours before visiting. Most branches close at 9pm; West Vancouver closes at 8:30pm.</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .review-card {
+    background: white; border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 1.2rem;
+    transition: all 0.2s;
+  }
+  .review-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.07); }
+  .review-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .reviewer-avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; flex-shrink: 0;
+  }
+  .reviewer-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+  .review-stars { font-size: 12px; color: var(--saffron); margin-top: 1px; }
+  .review-source {
+    margin-left: auto; font-size: 10px; color: #aaa;
+    background: #f5f5f5; padding: 2px 8px; border-radius: 20px;
+  }
+  .review-text { font-size: 13px; color: var(--text-mid); line-height: 1.6; font-style: italic; }
+</style>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Saffron Market</div>
+      <div class="footer-tagline">Vancouver's most affordable authentic Persian & Middle Eastern grocery. Demo grocery store. 8 locations across Greater Vancouver.</div>
+      <div class="footer-contact">
+        <div><strong>Phone:</strong> (604) 555-0142</div>
+        <div><strong>Email:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4b7a5a8a1b784b4a1b6b7ada5a2ababa0b7eaa7a5">[email&#160;protected]</a></div>
+        <div><strong>Partners:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="14647566607a71666754647166677d75727b7b70673a7775">[email&#160;protected]</a></div>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Shop</div>
+      <ul class="footer-links">
+        <li><a href="shop.html">All products</a></li>
+        <li><a href="shop.html">Fresh produce</a></li>
+        <li><a href="shop.html">Halal meat</a></li>
+        <li><a href="shop.html">Persian sweets</a></li>
+        <li><a href="shop.html">Daily offers</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="index.html">About us</a></li>
+        <li><a href="index.html">Our story</a></li>
+        <li><a href="branches.html">Branch locations</a></li>
+        <li><a href="index.html">Careers</a></li>
+        <li><a href="index.html">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">My account</div>
+      <ul class="footer-links">
+        <li><a href="login.html">Sign in</a></li>
+        <li><a href="login.html">Create account</a></li>
+        <li><a href="account-customer.html">Order history</a></li>
+        <li><a href="account-staff.html">Staff portal</a></li>
+        <li><a href="account-manager.html">Manager dashboard</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Saffron Market (fictional demo). All rights reserved. Vancouver, BC, Canada.</span>
+    <div class="payment-icons">
+      <span class="pay-icon">Visa</span>
+      <span class="pay-icon">MC</span>
+      <span class="pay-icon">Apple Pay</span>
+      <span class="pay-icon">Debit</span>
+    </div>
+  </div>
+</footer>
+
+<!-- AI Chatbot injected by chatbot.js -->
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-top">
+      <div class="modal-logo">Saffron Market</div>
+      <div class="modal-sub">Sign in to your account</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="role-tabs">
+        <button class="role-tab active" onclick="selectRole(this,'customer')">Customer</button>
+        <button class="role-tab" onclick="selectRole(this,'staff')">Staff</button>
+        <button class="role-tab" onclick="selectRole(this,'manager')">Manager</button>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-input" placeholder="you@email.com">
+      </div>
+      <div class="form-field">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="form-btn" onclick="demoLogin()">Sign in</button>
+      <div class="form-divider">— or —</div>
+      <button class="form-btn" style="background:var(--forest)">Create new account</button>
+    </div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Language toggle
+  let lang = 'en';
+  function setLang(l) {
+    lang = l;
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+    if (l === 'fa') {
+      document.querySelector('.search-input').placeholder = 'جستجو — برنج، زعفران، پنیر…';
+    } else {
+      document.querySelector('.search-input').placeholder = 'Search products — e.g. rice, saffron, feta cheese…';
+    }
+  }
+
+  // Voice search
+  function startVoice() {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      document.getElementById('voiceStatus').textContent = 'Voice not supported in this browser';
+      return;
+    }
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const rec = new SR();
+    rec.lang = lang === 'fa' ? 'fa-IR' : 'en-US';
+    rec.interimResults = false;
+    const btn = document.getElementById('voiceBtn');
+    const status = document.getElementById('voiceStatus');
+    btn.classList.add('listening');
+    status.textContent = lang === 'fa' ? '🎙️ گوش می‌دهم…' : '🎙️ Listening…';
+    rec.start();
+    rec.onresult = e => {
+      const transcript = e.results[0][0].transcript;
+      document.getElementById('searchInput').value = transcript;
+      status.textContent = '✅ ' + transcript;
+      btn.classList.remove('listening');
+    };
+    rec.onerror = () => {
+      btn.classList.remove('listening');
+      status.textContent = '';
+    };
+    rec.onend = () => btn.classList.remove('listening');
+  }
+
+  // Chat
+  function toggleChat() {
+    const w = document.getElementById('chatWindow');
+    w.classList.toggle('open');
+    document.getElementById('chatBtn').textContent = w.classList.contains('open') ? '✕' : '💬';
+  }
+
+  function sendSugg(text) {
+    document.getElementById('chatInput').value = text;
+    sendChat();
+  }
+
+  const botReplies = {
+    'branch': 'All 8 branches are open today from 9am to 9pm! The closest to downtown is our Broadway (Kitsilano) location. Would you like the address?',
+    'saffron': 'Yes! Premium Iranian saffron is available at all branches. Currently on sale for $12.49 (was $16.00). You can add it to your cart from our Shop page.',
+    'discount': 'Today\'s deals: Saffron 22% off, Dried Fenugreek 33% off, and a special Eid offer on halal meats at all locations. Check our Offers page for more!',
+    'default': 'Great question! I can help you find products, check availability at a specific branch, or tell you about current offers. What would you like to know?',
+    'fa': 'خوش آمدید! چطور می‌توانم کمکتان کنم؟ محصولات، شعب، یا پیشنهادات ویژه؟'
+  };
+
+  function sendChat() {
+    const input = document.getElementById('chatInput');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const messages = document.getElementById('chatMessages');
+    const userMsg = document.createElement('div');
+    userMsg.className = 'msg msg-user';
+    userMsg.textContent = msg;
+    messages.appendChild(userMsg);
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+
+    setTimeout(() => {
+      const botMsg = document.createElement('div');
+      botMsg.className = 'msg msg-bot';
+      const lower = msg.toLowerCase();
+      if (lower.includes('branch') || lower.includes('open') || lower.includes('location')) {
+        botMsg.textContent = botReplies.branch;
+      } else if (lower.includes('saffron') || lower.includes('زعفران')) {
+        botMsg.textContent = botReplies.saffron;
+      } else if (lower.includes('discount') || lower.includes('deal') || lower.includes('offer')) {
+        botMsg.textContent = botReplies.discount;
+      } else if (/[\u0600-\u06FF]/.test(msg)) {
+        botMsg.textContent = botReplies.fa;
+        botMsg.classList.add('msg-fa');
+      } else {
+        botMsg.textContent = botReplies.default;
+      }
+      messages.appendChild(botMsg);
+      messages.scrollTop = messages.scrollHeight;
+    }, 700);
+  }
+
+  // Modal
+  function openModal() { document.getElementById('loginModal').classList.add('open'); }
+  function closeModal() { document.getElementById('loginModal').classList.remove('open'); }
+  function selectRole(el, role) {
+    document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function demoLogin() {
+    closeModal();
+    document.getElementById('staffBar').classList.add('visible');
+  }
+  document.getElementById('loginModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Add to cart feedback
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.a
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1B5E35">

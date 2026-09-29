@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Saffron Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--crimson:#C0392B;--saffron:#E8A020;--gold:#F5C842;--forest:#1A6B3A;--store-green:#1B5E35;--night:#0F1A0F;--cream:#FDF6E3;--warm-white:#FFFCF5;--text-dark:#1A1008;--text-mid:#5C4A2A;--border:rgba(200,160,60,0.2);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--warm-white);color:var(--text-dark);}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--store-green);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;border-bottom:3px solid var(--saffron);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.8);text-decoration:none;font-size:14px;font-weight:500;}
+.nav-links a:hover,.nav-active{color:var(--saffron)!important;}
+.lang-btn{background:transparent;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);font-size:12px;padding:4px 10px;border-radius:20px;cursor:pointer;font-family:'Outfit',sans-serif;}
+.lang-btn.active{background:var(--saffron);border-color:var(--saffron);color:var(--night);}
+.btn-nav{background:transparent;border:1.5px solid var(--saffron);color:var(--saffron);padding:7px 18px;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;}
+.btn-nav:hover{background:var(--saffron);color:var(--night);}
+.cart-btn{position:relative;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;width:40px;height:40px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cart-badge{position:absolute;top:-6px;right:-6px;background:var(--crimson);color:white;font-size:10px;width:18px;height:18px;border-radius:50%;display:none;align-items:center;justify-content:center;font-weight:700;}
+.page-header{background:linear-gradient(135deg,var(--store-green),var(--night));color:white;padding:5.5rem 5rem 2.5rem;margin-top:64px;}
+.page-header-label{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--saffron);margin-bottom:8px;}
+.page-header-title{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;line-height:1.1;margin-bottom:10px;}
+.page-header-sub{font-size:15px;color:rgba(255,255,255,0.65);line-height:1.6;}
+.filter-bar{background:white;border-bottom:1.5px solid var(--border);padding:1rem 5rem;display:flex;gap:12px;align-items:center;flex-wrap:wrap;position:sticky;top:64px;z-index:50;}
+.filter-search{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:0 14px;}
+.filter-search input{border:none;outline:none;background:transparent;font-size:14px;font-family:'Outfit',sans-serif;padding:10px 0;flex:1;color:var(--text-dark);}
+.filter-select{border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;font-family:'Outfit',sans-serif;background:white;color:var(--text-dark);cursor:pointer;outline:none;}
+.voice-btn{background:var(--crimson);border:none;color:white;width:42px;height:42px;border-radius:8px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cat-tabs{padding:1rem 5rem 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;background:white;border-bottom:1.5px solid var(--border);}
+.cat-tabs::-webkit-scrollbar{display:none;}
+.cat-tab{background:transparent;border:none;border-bottom:3px solid transparent;padding:8px 16px 12px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:'Outfit',sans-serif;color:var(--text-mid);}
+.cat-tab:hover{color:var(--store-green);}
+.cat-tab.active{color:var(--store-green);border-bottom-color:var(--store-green);}
+.shop-layout{display:grid;grid-template-columns:230px 1fr;min-height:60vh;}
+.sidebar{padding:1.5rem 1.5rem 3rem 5rem;border-right:1.5px solid var(--border);background:white;}
+.sidebar-section{margin-bottom:1.8rem;}
+.sidebar-title{font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-mid);margin-bottom:10px;}
+.sidebar-check{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-dark);cursor:pointer;padding:4px 0;user-select:none;}
+.sidebar-check input{accent-color:var(--store-green);width:15px;height:15px;}
+.price-range{width:100%;accent-color:var(--store-green);margin-top:8px;cursor:pointer;}
+.products-area{padding:1.5rem 5rem 3rem 2rem;}
+.results-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.2rem;}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:14px;}
+.product-card{background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.25s;cursor:pointer;}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(0,0,0,0.09);border-color:var(--saffron);}
+.product-img{height:120px;display:flex;align-items:center;justify-content:center;font-size:46px;position:relative;}
+.product-badge{position:absolute;top:8px;left:8px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;text-transform:uppercase;}
+.b-sale{background:var(--crimson);color:white;}
+.b-new{background:var(--forest);color:white;}
+.b-hot{background:var(--saffron);color:var(--night);}
+.product-info{padding:10px 12px 12px;}
+.product-name{font-size:13px;font-weight:600;margin-bottom:2px;color:var(--text-dark);line-height:1.3;}
+.product-sub{font-size:11px;color:#aaa;margin-bottom:8px;line-height:1.4;}
+.product-footer{display:flex;align-items:center;justify-content:space-between;}
+.product-price{font-size:15px;font-weight:700;color:var(--forest);}
+.old-price{font-size:11px;color:#bbb;text-decoration:line-through;margin-left:3px;font-weight:400;}
+.add-btn{width:30px;height:30px;background:var(--saffron);border:none;border-radius:7px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;color:var(--night);font-weight:700;}
+.add-btn:hover{background:var(--gold);}
+.add-btn.added{background:var(--forest);color:white;}
+.no-results{text-align:center;padding:4rem;color:#aaa;grid-column:1/-1;}
+.cart-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;}
+.cart-drawer{position:fixed;top:0;right:-420px;width:400px;max-width:100vw;height:100vh;background:white;z-index:501;display:flex;flex-direction:column;transition:right 0.3s ease;box-shadow:-10px 0 40px rgba(0,0,0,0.15);}
+.cart-drawer.open{right:0;}
+footer{background:var(--store-green);color:white;padding:3.5rem 5rem 2rem;border-top:3px solid var(--saffron);}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:2rem;}
+.footer-brand{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--saffron);margin-bottom:8px;}
+.footer-col-title{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--saffron);margin-bottom:10px;letter-spacing:0.07em;}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.footer-links a{color:rgba(255,255,255,0.55);text-decoration:none;font-size:13px;}
+.footer-links a:hover{color:var(--saffron);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:1.2rem;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(255,255,255,0.35);}
+@media(max-width:900px){nav{padding:0 1rem;}.nav-links{display:none;}.page-header,.filter-bar{padding-left:1.5rem;padding-right:1.5rem;}.cat-tabs{padding:0.8rem 1rem 0;}.shop-layout{grid-template-columns:1fr;}.sidebar{display:none;}.products-area{padding:1.5rem;}.footer-grid{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<div role="note" style="position:fixed;left:12px;bottom:12px;z-index:99999;background:#1B4332;color:#fff;font:600 12.5px/1.35 system-ui,sans-serif;padding:8px 12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25);max-width:260px;">Portfolio demo with a fictional brand. Not a real store.</div>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="data:image/jpeg;base64,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utfA6x8PMoaa9l1G7tOOftFuIpAB/vRmZfqwpfFkS6P8E5PDihVl028sZLo9/tM8c0rgn/ZUxp/wA153D4+u7DRPDtnp6GzvNFvJ7yG8DhyzSeXgbCuOPL75Bz0pt147utR8O63p97Gbq81XUY9RmvWcA71EgI2AY5MmeCAMdKSyzE+05/s+057X1vz79rcnS979LlPMcP7Pl+17PkvbS3Jt3vz9drdTq/iP4o1T4f8AjG48O+HryTStL0kRwLDB8q3LbFLSTDpIWYk/NkYwOlYfxc0qz07xLaXNjbpZQ6pp1rqRtYhhIXljDMqjsM5IHbOKbd+OdL8QPa3fiHQZNS1SCJIWure++zrcqgCr5y7GLHaACVZSQB35rB8U+Jbzxdrlxql7sWaXaojiXbHEigKqKOygAAfSu7A4SrRnScocrjFqT0996a6O71Td5Wav5s4sZiadWFRRnzKUk4rX3VrpqrLRpWV1p5I7zwzrHn+CNK07w74jtfDOtQTTNfpcSm2N7uYeUfOxtKhfl2MwHU85pPDniDxdoHxZ0zSr29u9Hkm1i2N7p9nMYYJGZ4wzGOM7DvXBJAwQfSuR07W9AGm2tvqfh6S5uLfcPtNlffZ2mBYsBICjg4zjK7TgAZ4qze/EGfUfiFZeKZ7OMG1uLeWOyhYqojh2hIwxyfuoBk59faspYGUp1Y+yvGSnrJRvzN6Wad7b/EtNFc1jjIxjSl7S0ouOi5rWS1umrX22euuh2OmXl947+Mr6Lr+pX+q6Pb6hd3AsLm6d4yIVlcIqkkDIXbx2JrP8D+PtW8U+OtM0rWJf7Q0TVbpLObSmA+zRpI20eVH0jK5BBXBG3rXHxeL7yx8aP4k0/wD0S8+2PeRqTvCFmLbT0yMHB9RW3ZeP9J0TVH1nR/Df2HW/maGR7zzba2dgQXih2AgjJ2hnYDjg4qKuAmoOMaV7wSjay5Za3e6te61jd+76FUsbFyUpVLWm293zR0svO1no7LX1O8h07xHp3gXQ9M8M62NNeLW9Qt3ZtUjsxPtaJVyrOvmd+AG69OadpstrH8dvFjaZINKWLTLxTOI3hEMy22JJAqjco8wM3Az6DtXlGp+LG1PwhpOiPbkNY3Nxcm5Mm4ymXZxtxxjZ1yc57V0dt8Vom1+DVr7SHubp9IfSr54rsRtdbozGJsmNtr7CAchslc1xzyzFKFT3U3JVFpZP3pXTd3Z3S025b2a1duuOY4dzp+9ZRdN63a0jZpWV1ZvXe9rrZXy/GGr6nfafDFeeOz4piEu4Wvn3riNsH58Txqvcjg55rka2NXuvD81qq6XpmpWdxvBMl5qMdwhXByNqwRnOcc57HjnjHr6rC01Sp8qi168q/wDSdD5nEzdSpzN39Ob/ANu1Ciiiuw5QooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=" alt="Saffron Market" style="height:46px;width:46px;object-fit:cover;border-radius:8px;">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html" class="nav-active">Shop</a></li>
+    <li><a href="branches.html">Branches</a></li>
+    <li><a href="events.html">Culture &amp; Events</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div style="display:flex;gap:5px;"><button class="lang-btn active">EN</button><button class="lang-btn">&#1601;&#1575;</button></div>
+    <button class="cart-btn" onclick="openCart()">&#128722;<span class="cart-badge" id="cartBadge">0</span></button>
+    <a href="login.html" class="btn-nav">Sign in</a>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-header-label">Browse &amp; order</div>
+  <h1 class="page-header-title">Our Products</h1>
+  <p class="page-header-sub">40+ authentic Persian groceries, fresh produce, halal meat and more — filter by branch, category, or use voice search.</p>
+</div>
+
+<div class="filter-bar">
+  <div class="filter-search">
+    <span>&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search products — try rice, saffron, bread..." oninput="filterProducts()">
+  </div>
+  <select class="filter-select" id="branchFilter" onchange="filterProducts()">
+    <option value="">All branches</option>
+    <option value="broadway">Broadway – Kitsilano</option>
+    <option value="kingsway">Kingsway – Burnaby</option>
+    <option value="lonsdale">Lonsdale – North Vancouver</option>
+    <option value="commercial">Commercial Drive</option>
+    <option value="north-van">Marine Dr – North Vancouver</option>
+    <option value="main-st">Main Street</option>
+  </select>
+  <select class="filter-select" id="sortFilter" onchange="filterProducts()">
+    <option value="default">Sort: Featured</option>
+    <option value="price-asc">Price: Low to High</option>
+    <option value="price-desc">Price: High to Low</option>
+    <option value="name">Name A-Z</option>
+  </select>
+  <button class="voice-btn" onclick="startVoice()" title="Voice search">&#127897;&#65039;</button>
+</div>
+
+<div class="cat-tabs">
+  <button class="cat-tab active" data-cat="all" onclick="selectCat(this)">All</button>
+  <button class="cat-tab" data-cat="produce" onclick="selectCat(this)">&#129382; Fresh Produce</button>
+  <button class="cat-tab" data-cat="meat" onclick="selectCat(this)">&#129361; Halal Meat</button>
+  <button class="cat-tab" data-cat="rice" onclick="selectCat(this)">&#127834; Rice &amp; Grains</button>
+  <button class="cat-tab" data-cat="dairy" onclick="selectCat(this)">&#129472; Dairy</button>
+  <button class="cat-tab" data-cat="bread" onclick="selectCat(this)">&#127838; Bread</button>
+  <button class="cat-tab" data-cat="spices" onclick="selectCat(this)">&#127807; Spices &amp; Herbs</button>
+  <button class="cat-tab" data-cat="sweets" onclick="selectCat(this)">&#127852; Sweets</button>
+  <button class="cat-tab" data-cat="tea" onclick="selectCat(this)">&#129371; Tea &amp; Drinks</button>
+  <button class="cat-tab" data-cat="pickles" onclick="selectCat(this)">&#129293; Pickles &amp; Jams</button>
+  <button class="cat-tab" data-cat="nuts" onclick="selectCat(this)">&#129380; Nuts &amp; Dried Fruit</button>
+</div>
+
+<div class="shop-layout">
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Price range</div>
+      <input type="range" class="price-range" id="priceRange" min="1" max="50" value="50" oninput="updatePrice();filterProducts()">
+      <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Up to $<span id="priceLabel">50</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Dietary</div>
+      <label class="sidebar-check"><input type="checkbox" onchange="filterProducts()"> Halal</label>
+      <label class="sidebar-check"><input type="checkbox" onchange="filterProducts()"> Organic</label>
+      <label class="sidebar-check"><input type="checkbox" onchange="filterProducts()"> Vegan</label>
+      <label class="sidebar-check"><input type="checkbox" onchange="filterProducts()"> Gluten-free</label>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Offers</div>
+      <label class="sidebar-check"><input type="checkbox" id="saleOnly" onchange="filterProducts()"> On sale only</label>
+      <label class="sidebar-check"><input type="checkbox" id="newOnly" onchange="filterProducts()"> New arrivals</label>
+    </div>
+  </div>
+
+  <div class="products-area">
+    <div class="results-bar">
+      <div style="font-size:13px;color:var(--text-mid);"><strong id="resultCount">40</strong> products found</div>
+    </div>
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div style="background:var(--store-green);color:white;padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;">
+    <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;">Your Cart &#128722;</div>
+    <button onclick="closeCart()" style="background:none;border:none;color:white;font-size:22px;cursor:pointer;">X</button>
+  </div>
+  <div id="cartItemsList" style="flex:1;overflow-y:auto;padding:1rem;"></div>
+  <div style="padding:1rem 1.5rem;border-top:1px solid var(--border);">
+    <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;margin-bottom:12px;"><span>Total:</span><span id="cartTotal" style="color:var(--forest);">$0.00</span></div>
+    <button onclick="alert('Online checkout coming soon! Call (604) 555-0142.')" style="width:100%;background:var(--crimson);color:white;border:none;padding:13px;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;font-family:Outfit,sans-serif;margin-bottom:8px;">Checkout</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div><div class="footer-brand">Saffron Market</div><div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.7;margin-bottom:1rem;">Vancouver's most affordable Persian and Middle Eastern grocery. Demo grocery store.</div><div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:2;"><div><strong style="color:rgba(255,255,255,0.8);">Phone:</strong> (604) 555-0142</div><div><strong style="color:rgba(255,255,255,0.8);">Email:</strong> hello@example.com</div></div></div>
+    <div><div class="footer-col-title">Shop</div><ul class="footer-links"><li><a href="shop.html">All products</a></li><li><a href="shop.html">Halal meat</a></li><li><a href="shop.html">Fresh produce</a></li></ul></div>
+    <div><div class="footer-col-title">Visit</div><ul class="footer-links"><li><a href="branches.html">All branches</a></li><li><a href="events.html">Culture &amp; Events</a></li></ul></div>
+    <div><div class="footer-col-title">Account</div><ul class="footer-links"><li><a href="login.html">Sign in</a></li><li><a href="account-staff.html">Staff portal</a></li><li><a href="account-manager.html">Manager dashboard</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>&copy; 2024 Saffron Market. Vancouver, BC, Canada.</span></div>
+</footer>
+
+<script>
+var PRODUCTS=[
+  {id:1,name:'Basmati Rice Extra Long',emoji:'&#127806;',price:18.99,cat:'rice',badge:'hot',branch:'broadway',desc:'Persian variety 5kg bag'},
+  {id:2,name:'Saffron Premium Grade',emoji:'&#127802;',price:12.49,oldPrice:16.00,cat:'spices',badge:'sale',branch:'all',desc:'Pure Iranian saffron 1g jar'},
+  {id:3,name:'Mixed Salad Greens',emoji:'&#129382;',price:3.99,cat:'produce',badge:'new',branch:'kingsway',desc:'Local BC farm 200g'},
+  {id:4,name:'Feta Cheese in Brine',emoji:'&#129472;',price:7.29,cat:'dairy',branch:'all',desc:'Traditional 400g'},
+  {id:5,name:'Wild Mountain Honey',emoji:'&#127855;',price:14.99,cat:'sweets',badge:'hot',branch:'broadway',desc:'Iranian highlands 500g'},
+  {id:6,name:'Dried Fenugreek',emoji:'&#127807;',price:2.99,oldPrice:4.50,cat:'spices',badge:'sale',branch:'all',desc:'100g pack'},
+  {id:7,name:'Sangak Bread',emoji:'&#127838;',price:3.49,cat:'bread',branch:'lonsdale',desc:'Baked in-store daily'},
+  {id:8,name:'Persian Black Tea',emoji:'&#129371;',price:9.99,cat:'tea',branch:'all',desc:'Lahijan 500g loose leaf'},
+  {id:9,name:'Halal Lamb Shoulder',emoji:'&#129361;',price:22.99,cat:'meat',badge:'new',branch:'broadway',desc:'Fresh cut per kg'},
+  {id:10,name:'Halal Chicken Whole',emoji:'&#128020;',price:12.49,cat:'meat',branch:'all',desc:'Fresh approx 1.5kg'},
+  {id:11,name:'Halal Ground Beef',emoji:'&#129361;',price:11.99,cat:'meat',badge:'hot',branch:'all',desc:'Lean 500g pack'},
+  {id:12,name:'Persian Dates Mazafati',emoji:'&#127815;',price:8.99,cat:'sweets',badge:'hot',branch:'all',desc:'Soft and fresh 500g'},
+  {id:13,name:'Lavash Bread',emoji:'&#127839;',price:2.49,cat:'bread',branch:'all',desc:'Thin flatbread pack of 4'},
+  {id:14,name:'Barbari Bread',emoji:'&#127838;',price:3.99,cat:'bread',badge:'new',branch:'lonsdale',desc:'Thick sesame loaf'},
+  {id:15,name:'Kashk Whey',emoji:'&#129379;',price:6.49,cat:'dairy',branch:'broadway',desc:'Traditional fermented 400g'},
+  {id:16,name:'Doogh Yogurt Drink',emoji:'&#129371;',price:3.49,cat:'tea',branch:'all',desc:'Mint flavour 1L bottle'},
+  {id:17,name:'Pomegranate Paste',emoji:'&#10084;&#65039;',price:5.99,cat:'pickles',branch:'all',desc:'For ghormeh sabzi 300g'},
+  {id:18,name:'Torshi Liteh Mixed Pickle',emoji:'&#129346;',price:7.49,cat:'pickles',branch:'all',desc:'Traditional Persian pickle 700g'},
+  {id:19,name:'Walnut Halves',emoji:'&#129380;',price:9.49,cat:'nuts',branch:'all',desc:'Raw 500g bag'},
+  {id:20,name:'Pistachios Roasted Salted',emoji:'&#129379;',price:11.99,cat:'nuts',badge:'hot',branch:'all',desc:'300g bag'},
+  {id:21,name:'Dried Barberries Zereshk',emoji:'&#127826;',price:6.99,cat:'nuts',branch:'all',desc:'For rice dishes 200g'},
+  {id:22,name:'Turmeric Powder',emoji:'&#127849;',price:3.49,cat:'spices',branch:'all',desc:'Pure ground 200g'},
+  {id:23,name:'Dried Rose Petals',emoji:'&#127801;',price:4.99,cat:'spices',badge:'new',branch:'broadway',desc:'Culinary grade 50g'},
+  {id:24,name:'Baklava Assorted Tray',emoji:'&#127846;',price:18.99,cat:'sweets',badge:'hot',branch:'lonsdale',desc:'Mixed 500g tray'},
+  {id:25,name:'Gaz Persian Nougat',emoji:'&#127853;',price:12.49,cat:'sweets',branch:'all',desc:'Pistachio 300g box'},
+  {id:26,name:'Chickpeas Canned',emoji:'&#129379;',price:2.29,cat:'rice',branch:'all',desc:'For hummus and stews 540ml'},
+  {id:27,name:'Red Lentils',emoji:'&#128992;',price:4.49,cat:'rice',branch:'all',desc:'Bulk 1kg bag'},
+  {id:28,name:'Persian Mini Cucumbers',emoji:'&#129346;',price:3.99,cat:'produce',badge:'hot',branch:'all',desc:'Crispy thin-skin 500g bag'},
+  {id:29,name:'Vine Tomatoes',emoji:'&#127813;',price:4.49,cat:'produce',branch:'all',desc:'Fresh per kg'},
+  {id:30,name:'Fresh Mint Bunch',emoji:'&#127807;',price:1.49,cat:'produce',branch:'all',desc:'Freshly picked'},
+  {id:31,name:'Fresh Dill Bunch',emoji:'&#127807;',price:1.49,cat:'produce',branch:'all',desc:'For masto khiar'},
+  {id:32,name:'Fresh Flat Leaf Parsley',emoji:'&#127807;',price:1.29,cat:'produce',branch:'all',desc:'Bunch'},
+  {id:33,name:'Kashk-e Bademjan',emoji:'&#127814;',price:7.99,cat:'pickles',badge:'new',branch:'broadway',desc:'Eggplant dip 300g'},
+  {id:34,name:'Rose Water',emoji:'&#127801;',price:4.99,cat:'spices',branch:'all',desc:'For desserts and drinks 250ml'},
+  {id:35,name:'Halal Beef Kabob Mix',emoji:'&#129366;',price:16.99,cat:'meat',badge:'hot',branch:'lonsdale',desc:'Pre-marinated 600g'},
+  {id:36,name:'Thick Persian Yogurt',emoji:'&#129379;',price:5.49,cat:'dairy',branch:'all',desc:'Full fat 750g tub'},
+  {id:37,name:'Dried Apricots',emoji:'&#127825;',price:5.99,cat:'nuts',branch:'all',desc:'Unsulphured 250g'},
+  {id:38,name:'Pomegranate Juice',emoji:'&#127815;',price:6.99,cat:'tea',badge:'new',branch:'all',desc:'Pure no sugar 1L'},
+  {id:39,name:'Advieh Persian Spice Mix',emoji:'&#10024;',price:5.49,cat:'spices',branch:'all',desc:'For rice and stews 100g'},
+  {id:40,name:'Halal Halloumi',emoji:'&#129472;',price:9.99,oldPrice:13.99,cat:'dairy',badge:'sale',branch:'all',desc:'Grilling cheese 250g'}
+];
+
+var BG={produce:'#E8F5E9',meat:'#FFEBEE',rice:'#FFF9E6',dairy:'#FCE4EC',bread:'#FFF3E0',spices:'#F1F8E9',sweets:'#FBE9E7',tea:'#E3F2FD',pickles:'#E8F5E9',nuts:'#FFF8E1'};
+var cart=JSON.parse(localStorage.getItem('pf_cart')||'[]');
+var activeCat='all';
+
+function updateCartBadge(){
+  var t=cart.reduce(function(s,i){return s+i.qty;},0);
+  var b=document.getElementById('cartBadge');
+  b.textContent=t;
+  b.style.display=t>0?'flex':'none';
+}
+
+function addToCart(id,btn){
+  var p=null;
+  for(var i=0;i<PRODUCTS.length;i++){if(PRODUCTS[i].id===id){p=PRODUCTS[i];break;}}
+  var ex=null;
+  for(var i=0;i<cart.length;i++){if(cart[i].id===id){ex=cart[i];break;}}
+  if(ex){ex.qty++;}else{cart.push({id:p.id,name:p.name,price:p.price,emoji:p.emoji,qty:1});}
+  localStorage.setItem('pf_cart',JSON.stringify(cart));
+  updateCartBadge();
+  btn.textContent='V';
+  btn.classList.add('added');
+  setTimeout(function(){btn.textContent='+';btn.classList.remove('added');},1200);
+}
+
+function filterProducts(){
+  var search=document.getElementById('searchInput').value.toLowerCase();
+  var branch=document.getElementById('branchFilter').value;
+  var maxP=parseFloat(document.getElementById('priceRange').value);
+  var saleOnly=document.getElementById('saleOnly').checked;
+  var newOnly=document.getElementById('newOnly').checked;
+  var sort=document.getElementById('sortFilter').value;
+  var res=[];
+  for(var i=0;i<PRODUCTS.length;i++){
+    var p=PRODUCTS[i];
+    if(activeCat!=='all'&&p.cat!==activeCat)continue;
+    if(search&&p.name.toLowerCase().indexOf(search)<0&&p.desc.toLowerCase().indexOf(search)<0)continue;
+    if(branch&&p.branch!=='all'&&p.branch!==branch)continue;
+    if(p.price>maxP)continue;
+    if(saleOnly&&p.badge!=='sale')continue;
+    if(newOnly&&p.badge!=='new')continue;
+    res.push(p);
+  }
+  if(sort==='price-asc')res.sort(function(a,b){return a.price-b.price;});
+  else if(sort==='price-desc')res.sort(function(a,b){return b.price-a.price;});
+  else if(sort==='name')res.sort(function(a,b){return a.name.localeCompare(b.name);});
+  document.getElementById('resultCount').textContent=res.length;
+  renderProducts(res);
+}
+
+function renderProducts(list){
+  var grid=document.getElementById('productsGrid');
+  if(!list.length){
+    grid.innerHTML='<div class="no-results"><div style="font-size:48px;">&#128269;</div><p style="margin-top:12px;font-size:15px;font-weight:600;">No products found</p><p style="font-size:13px;margin-top:6px;">Try a different search or filter</p></div>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<list.length;i++){
+    var p=list[i];
+    var badgeHtml='';
+    if(p.badge){
+      var bc=p.badge==='sale'?'b-sale':p.badge==='new'?'b-new':'b-hot';
+      var bl=p.badge==='hot'?'Hot':p.badge==='sale'?'Sale':'New';
+      badgeHtml='<span class="product-badge '+bc+'">'+bl+'</span>';
+    }
+    var oldP=p.oldPrice?'<span class="old-price">$'+p.oldPrice.toFixed(2)+'</span>':'';
+    html+='<div class="product-card">';
+    html+='<div class="product-img" style="background:'+(BG[p.cat]||'#f9f9f9')+';">';
+    html+=p.emoji+badgeHtml;
+    html+='</div><div class="product-info">';
+    html+='<div class="product-name">'+p.name+'</div>';
+    html+='<div class="product-sub">'+p.desc+'</div>';
+    html+='<div class="product-footer">';
+    html+='<div class="product-price">$'+p.price.toFixed(2)+oldP+'</div>';
+    html+='<button class="add-btn" onclick="addToCart('+p.id+',this)">+</button>';
+    html+='</div></div></div>';
+  }
+  grid.innerHTML=html;
+}
+
+function selectCat(btn){
+  document.querySelectorAll('.cat-tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  activeCat=btn.dataset.cat;
+  filterProducts();
+}
+
+function updatePrice(){document.getElementById('priceLabel').textContent=document.getElementById('priceRange').value;}
+
+function openCart(){
+  document.getElementById('cartOverlay').style.display='block';
+  document.getElementById('cartDrawer').classList.add('open');
+  renderCart();
+}
+function closeCart(){
+  document.getElementById('cartOverlay').style.display='none';
+  document.getElementById('cartDrawer').classList.remove('open');
+}
+function renderCart(){
+  var el=document.getElementById('cartItemsList');
+  var te=document.getElementById('cartTotal');
+  if(!cart.length){
+    el.innerHTML='<div style="text-align:center;padding:3rem;color:#aaa;"><div style="font-size:48px;">&#128722;</div><p style="margin-top:12px;font-size:14px;">Your cart is empty</p></div>';
+    te.textContent='$0.00';return;
+  }
+  var total=0;
+  var html='';
+  for(var i=0;i<cart.length;i++){
+    var item=cart[i];
+    total+=item.price*item.qty;
+    html+='<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);">';
+    html+='<span style="font-size:26px;">'+item.emoji+'</span>';
+    html+='<div style="flex:1;"><div style="font-size:13px;font-weight:600;">'+item.name+'</div><div style="font-size:11px;color:#aaa;">$'+item.price.toFixed(2)+' each</div></div>';
+    html+='<div style="display:flex;align-items:center;gap:6px;">';
+    html+='<button onclick="chQty('+i+',-1)" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:white;cursor:pointer;">-</button>';
+    html+='<span style="font-size:13px;font-weight:600;">'+item.qty+'</span>';
+    html+='<button onclick="chQty('+i+',1)" style="width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:white;cursor:pointer;">+</button>';
+    html+='</div>';
+    html+='<div style="font-size:13px;font-weight:700;color:var(--forest);min-width:48px;text-align:right;">$'+(item.price*item.qty).toFixed(2)+'</div>';
+    html+='</div>';
+  }
+  el.innerHTML=html;
+  te.textContent='$'+total.toFixed(2);
+}
+function chQty(i,d){
+  cart[i].qty+=d;
+  if(cart[i].qty<=0)cart.splice(i,1);
+  localStorage.setItem('pf_cart',JSON.stringify(cart));
+  updateCartBadge();
+  renderCart();
+}
+function startVoice(){
+  if(!('webkitSpeechRecognition'in window||'SpeechRecognition'in window)){alert('Voice search works best in Chrome!');return;}
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  var r=new SR();r.lang='en-US';r.start();
+  r.onresult=function(e){document.getElementById('searchInput').value=e.results[0][0].transcript;filterProducts();};
+}
+
+filterProducts();
+updateCartBadge();
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager Dashboard — Saffron Market</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--crimson:#C0392B;--saffron:#E8A020;--gold:#F5C842;--forest:#1A6B3A;--store-green:#1B5E35;--night:#0F1A0F;--cream:#FDF6E3;--warm-white:#FFFCF5;--text-dark:#1A1008;--text-mid:#5C4A2A;--border:rgba(200,160,60,0.2);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:#F0EDE8;color:var(--text-dark);}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:var(--night);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:64px;border-bottom:3px solid var(--saffron);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo svg{width:34px;height:34px;}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:white;line-height:1.1;}
+.nav-logo-text .sub{font-size:10px;color:rgba(255,255,255,0.45);font-weight:400;display:block;font-family:'Outfit',sans-serif;}
+.nav-right{display:flex;align-items:center;gap:1.5rem;}
+.manager-badge{background:linear-gradient(135deg,#6B21A8,#9333EA);color:white;font-size:11px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:0.05em;}
+.nav-links{display:flex;gap:1.5rem;list-style:none;}
+.nav-links a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:500;}
+.nav-links a:hover{color:var(--saffron);}
+.sign-out{color:rgba(255,255,255,0.5);font-size:13px;text-decoration:none;}
+.sign-out:hover{color:var(--saffron);}
+.account-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 64px);margin-top:64px;}
+.sidebar{background:white;border-right:1.5px solid var(--border);padding:2rem 0;position:sticky;top:64px;height:calc(100vh - 64px);overflow-y:auto;}
+.sidebar-user{padding:1.5rem;border-bottom:1px solid var(--border);margin-bottom:1rem;}
+.user-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6B21A8,#9333EA);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:white;margin-bottom:10px;}
+.user-name{font-size:15px;font-weight:700;}
+.user-role-badge{display:inline-block;background:#F3E8FF;color:#6B21A8;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;margin-top:4px;}
+.user-branch{font-size:12px;color:#aaa;margin-top:4px;}
+.sidebar-nav{padding:0 0.8rem;}
+.sidebar-section-label{font-size:10px;font-weight:700;letter-spacing:0.1em;color:#ccc;padding:0 12px;margin:12px 0 4px;}
+.sidebar-nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:500;color:var(--text-mid);cursor:pointer;transition:all 0.2s;text-decoration:none;margin-bottom:2px;}
+.sidebar-nav-item:hover,.sidebar-nav-item.active{background:var(--cream);color:var(--store-green);font-weight:600;}
+.sidebar-nav-item.active{border-left:3px solid var(--store-green);}
+.sidebar-badge{margin-left:auto;background:#FEE2E2;color:#DC2626;font-size:10px;font-weight:700;padding:1px 7px;border-radius:10px;}
+.sidebar-divider{height:1px;background:var(--border);margin:10px 12px;}
+.account-main{padding:2rem 2.5rem;}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;}
+.greeting-text{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;}
+.greeting-sub{font-size:14px;color:#aaa;margin-top:4px;}
+.header-actions{display:flex;gap:10px;}
+.btn{padding:9px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:all 0.2s;}
+.btn-primary{background:var(--store-green);color:white;}
+.btn-primary:hover{background:var(--forest);}
+.btn-outline{background:white;color:var(--store-green);border:1.5px solid var(--store-green);}
+.btn-outline:hover{background:var(--cream);}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:2rem;}
+.stat-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:1.3rem 1.5rem;position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.stat-card.green::before{background:var(--store-green);}
+.stat-card.gold::before{background:var(--saffron);}
+.stat-card.red::before{background:var(--crimson);}
+.stat-card.purple::before{background:#9333EA;}
+.stat-icon{font-size:26px;margin-bottom:8px;}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;}
+.stat-label{font-size:12px;color:#aaa;margin-top:2px;}
+.stat-change{font-size:12px;font-weight:600;margin-top:6px;}
+.stat-change.up{color:#16A34A;}
+.stat-change.down{color:var(--crimson);}
+.section-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;margin-bottom:1.5rem;}
+.section-title{font-size:15px;font-weight:700;margin-bottom:1.2rem;display:flex;align-items:center;justify-content:space-between;}
+.section-title-left{display:flex;align-items:center;gap:8px;}
+.view-all{font-size:12px;font-weight:500;color:var(--store-green);text-decoration:none;cursor:pointer;}
+.branch-table{width:100%;border-collapse:collapse;}
+.branch-table th{font-size:11px;font-weight:700;letter-spacing:0.07em;color:#aaa;text-align:left;padding:6px 12px;border-bottom:1.5px solid var(--border);}
+.branch-table td{padding:13px 12px;border-bottom:1px solid rgba(200,160,60,0.1);font-size:13px;vertical-align:middle;}
+.branch-table tr:last-child td{border-bottom:none;}
+.branch-table tr:hover td{background:#FFFCF5;}
+.branch-name{font-weight:600;font-size:14px;}
+.branch-area{font-size:11px;color:#aaa;}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.status-dot.open{background:#16A34A;}
+.status-dot.closed{background:#aaa;}
+.revenue-bar-wrap{width:120px;height:7px;background:#F0EDE8;border-radius:10px;overflow:hidden;display:inline-block;}
+.revenue-bar{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--store-green),#25A865);}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:700;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+.alert-list{display:flex;flex-direction:column;gap:10px;}
+.alert-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;border:1px solid transparent;}
+.alert-item.urgent{background:#FEF2F2;border-color:#FCA5A5;}
+.alert-item.warning{background:#FFFBEB;border-color:#FCD34D;}
+.alert-item.info{background:#EFF6FF;border-color:#93C5FD;}
+.alert-item.success{background:#F0FDF4;border-color:#86EFAC;}
+.alert-emoji{font-size:20px;flex-shrink:0;margin-top:1px;}
+.alert-text{font-size:13px;font-weight:500;flex:1;}
+.alert-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.alert-time{font-size:11px;color:#bbb;flex-shrink:0;}
+.staff-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.staff-row:last-child{border-bottom:none;}
+.staff-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;flex-shrink:0;}
+.staff-info{flex:1;}
+.staff-name{font-size:13px;font-weight:600;}
+.staff-detail{font-size:11px;color:#aaa;}
+.staff-status{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;}
+.staff-status.clocked-in{background:#F0FDF4;color:#16A34A;}
+.staff-status.off{background:#F5F5F5;color:#aaa;}
+.chart-wrap{display:flex;align-items:flex-end;gap:6px;height:110px;padding-top:10px;}
+.chart-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;}
+.chart-bar{width:100%;border-radius:6px 6px 0 0;cursor:pointer;min-height:4px;}
+.chart-bar.main{background:linear-gradient(180deg,var(--store-green),#0D4A2E);}
+.chart-bar.compare{background:linear-gradient(180deg,#D1D5DB,#9CA3AF);}
+.chart-label{font-size:10px;color:#aaa;font-weight:500;}
+.chart-value{font-size:10px;color:var(--store-green);font-weight:700;}
+.legend-dot{width:10px;height:10px;border-radius:2px;display:inline-block;margin-right:5px;}
+.quick-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem;}
+.qa-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:1.2rem;text-align:center;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;}
+.qa-card:hover{border-color:var(--store-green);transform:translateY(-2px);box-shadow:0 4px 16px rgba(27,94,53,0.1);}
+.qa-icon{font-size:28px;margin-bottom:8px;}
+.qa-label{font-size:12px;font-weight:600;color:var(--text-dark);}
+.qa-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.product-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);}
+.product-row:last-child{border-bottom:none;}
+.product-rank{font-size:18px;width:28px;text-align:center;}
+.product-emoji{font-size:22px;}
+.product-info{flex:1;}
+.product-name{font-size:13px;font-weight:600;}
+.product-cat{font-size:11px;color:#aaa;}
+.product-sales{text-align:right;}
+.product-revenue{font-size:13px;font-weight:700;color:var(--store-green);}
+.product-units{font-size:11px;color:#aaa;}
+.ann-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Outfit',sans-serif;font-size:13px;resize:none;outline:none;transition:border-color 0.2s;}
+.ann-input:focus{border-color:var(--store-green);}
+.ann-targets{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0;}
+.ann-target{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:white;transition:all 0.2s;}
+.ann-target.selected{background:var(--store-green);color:white;border-color:var(--store-green);}
+@media(max-width:900px){.account-layout{grid-template-columns:1fr;}.sidebar{display:none;}.stat-grid{grid-template-columns:repeat(2,1fr);}.two-col{grid-template-columns:1fr;}.quick-actions{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div role="note" style="position:fixed;left:12px;bottom:12px;z-index:99999;background:#1B4332;color:#fff;font:600 12.5px/1.35 system-ui,sans-serif;padding:8px 12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.25);max-width:260px;">Portfolio demo with a fictional brand. Not a real store.</div>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="19" cy="28" rx="13" ry="5" fill="rgba(232,160,32,0.3)"/>
+      <rect x="18" y="10" width="2.5" height="18" rx="1.2" fill="#E8A020"/>
+      <ellipse cx="12" cy="16" rx="7" ry="4.5" fill="#25A865" transform="rotate(-20 12 16)"/>
+      <ellipse cx="26" cy="14" rx="7" ry="4.5" fill="#1A6B3A" transform="rotate(20 26 14)"/>
+      <ellipse cx="19" cy="12" rx="6" ry="3.5" fill="#2DBE72"/>
+    </svg>
+    <div class="nav-logo-text">Saffron Market<span class="sub">Management Portal</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">← Store Site</a></li>
+    <li><a href="branches.html">Branches</a></li>
+  </ul>
+  <div class="nav-right">
+    <span class="manager-badge">👑 MANAGER</span>
+    <a href="login.html" class="sign-out">Sign Out</a>
+  </div>
+</nav>
+
+<div class="account-layout">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="user-avatar">AK</div>
+      <div class="user-name">Ali Karimi</div>
+      <div class="user-role-badge">🏢 Regional Manager</div>
+      <div class="user-branch" style="margin-top:6px;">All Branches Access</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">OVERVIEW</div>
+      <a href="#" class="sidebar-nav-item active">📊 Dashboard</a>
+      <a href="#" class="sidebar-nav-item">🏪 All Branches</a>
+      <a href="#" class="sidebar-nav-item">📈 Sales Reports</a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">OPERATIONS</div>
+      <a href="#" class="sidebar-nav-item">👥 Staff Management</a>
+      <a href="#" class="sidebar-nav-item">📦 Inventory <span class="sidebar-badge">23</span></a>
+      <a href="#" class="sidebar-nav-item">🚛 Suppliers</a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">MARKETING</div>
+      <a href="#" class="sidebar-nav-item">📣 Announcements</a>
+      <a href="#" class="sidebar-nav-item">🎁 Promotions</a>
+      <a href="#" class="sidebar-nav-item">⭐ Reviews <span class="sidebar-badge" style="background:#FFF3CD;color:#856404;">12</span></a>
+      <div class="sidebar-divider"></div>
+      <a href="login.html" class="sidebar-nav-item" style="color:var(--crimson);">🚪 Sign Out</a>
+    </nav>
+  </aside>
+
+  <main class="account-main">
+    <div class="page-header">
+      <div>
+        <div class="greeting-text">Good morning, Ali 👋</div>
+        <div class="greeting-sub">All 10 branches reporting · Last updated just now</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" onclick="alert('Exporting full report...')">📥 Export Report</button>
+        <button class="btn btn-primary" onclick="document.getElementById('ann-section').scrollIntoView({behavior:'smooth'})">📣 Announcement</button>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card green">
+        <div class="stat-icon">💰</div>
+        <div class="stat-num">$42,810</div>
+        <div class="stat-label">Today's Revenue (All Branches)</div>
+        <div class="stat-change up">↑ 8.3% vs last Friday</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">🛒</div>
+        <div class="stat-num">1,247</div>
+        <div class="stat-label">Transactions Today</div>
+        <div class="stat-change up">↑ 122 more than yesterday</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">📦</div>
+        <div class="stat-num">23</div>
+        <div class="stat-label">Low Stock Items</div>
+        <div class="stat-change down">↑ 5 new since yesterday</div>
+      </div>
+      <div class="stat-card purple">
+        <div class="stat-icon">👥</div>
+        <div class="stat-num">68</div>
+        <div class="stat-label">Staff Clocked In Now</div>
+        <div class="stat-change up">↑ 4 more than usual</div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <a href="#" class="qa-card" onclick="alert('Opening staff setup...');return false;">
+        <div class="qa-icon">👤</div><div class="qa-label">Add Staff</div><div class="qa-sub">New hire setup</div>
+      </a>
+      <a href="#" class="qa-card" onclick="alert('Opening inventory alerts...');return false;">
+        <div class="qa-icon">🚨</div><div class="qa-label">Inventory Alerts</div><div class="qa-sub">23 items low</div>
+      </a>
+      <a href="#" class="qa-card" onclick="alert('Opening promotions...');return false;">
+        <div class="qa-icon">🏷️</div><div class="qa-label">Set Promotion</div><div class="qa-sub">Discount any product</div>
+      </a>
+      <a href="#" class="qa-card" onclick="alert('Opening schedule planner...');return false;">
+        <div class="qa-icon">📅</div><div class="qa-label">Schedules</div><div class="qa-sub">Manage all shifts</div>
+      </a>
+    </div>
+
+    <div class="section-card">
+      <div class="section-title">
+        <div class="section-title-left"><span>🏪</span> Branch Performance — Today</div>
+        <a class="view-all" href="branches.html">View All Branches →</a>
+      </div>
+      <table class="branch-table">
+        <thead>
+          <tr>
+            <th>#</th><th>Branch</th><th>Status</th><th>Revenue</th><th>Transactions</th><th>Staff On</th><th>vs Yesterday</th>
+          </tr>
+        </thead>
+        <tbody id="branchTableBody"></tbody>
+      </table>
+    </div>
+
+    <div class="two-col">
+      <div class="section-card">
+        <div class="section-title">
+          <div class="section-title-left"><span>📈</span> Weekly Sales</div>
+          <span style="font-size:12px;color:#aaa;">This week vs last week</span>
+        </div>
+        <div class="chart-wrap" id="salesChart"></div>
+        <div style="display:flex;gap:16px;margin-top:10px;">
+          <span><span class="legend-dot" style="background:var(--store-green);"></span>This week</span>
+          <span><span class="legend-dot" style="background:#D1D5DB;"></span>Last week</span>
+        </div>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;">
+          <div><div style="font-size:12px;color:#aaa;">Week Total</div><div style="font-weight:700;font-size:1.1rem;color:var(--store-green);">$248,430</div></div>
+          <div style="text-align:right"><div style="font-size:12px;color:#aaa;">Avg per Branch</div><div style="font-weight:700;font-size:1.1rem;">$24,843</div></div>
+        </div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">
+          <div class="section-title-left"><span>🔔</span> Alerts</div>
+          <span style="font-size:12px;background:#FEE2E2;color:#DC2626;padding:2px 8px;border-radius:10px;font-weight:700;">5 new</span>
+        </div>
+        <div class="alert-list">
+          <div class="alert-item urgent">
+            <span class="alert-emoji">🚨</span>
+            <div class="alert-text">Saffron out of stock — Lonsdale + Broadway<div class="alert-sub">Supplier notified</div></div>
+            <span class="alert-time">Now</span>
+          </div>
+          <div class="alert-item urgent">
+            <span class="alert-emoji">❄️</span>
+            <div class="alert-text">Fridge temp high at Kingsway (6°C)<div class="alert-sub">Maintenance called</div></div>
+            <span class="alert-time">12m</span>
+          </div>
+          <div class="alert-item warning">
+            <span class="alert-emoji">📦</span>
+            <div class="alert-text">Basmati rice running low — 4 branches<div class="alert-sub">Re-order suggested</div></div>
+            <span class="alert-time">1h</span>
+          </div>
+          <div class="alert-item info">
+            <span class="alert-emoji">⭐</span>
+            <div class="alert-text">New 5-star Google review — Commercial Dr<div class="alert-sub">"Best Persian grocery in Vancouver!"</div></div>
+            <span class="alert-time">2h</span>
+          </div>
+          <div class="alert-item success">
+            <span class="alert-emoji">🎉</span>
+            <div class="alert-text">Lonsdale hit weekly sales target!<div class="alert-sub">$38,200 this week · Target was $35,000</div></div>
+            <span class="alert-time">Today</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="section-card">
+        <div class="section-title">
+          <div class="section-title-left"><span>👥</span> Staff On Duty Now</div>
+          <a class="view-all" href="#">Full Roster →</a>
+        </div>
+        <div class="staff-row">
+          <div class="staff-avatar" style="background:linear-gradient(135deg,#1565C0,#1E3A8A);">MR</div>
+          <div class="staff-info"><div class="staff-name">Maryam Rahimi</div><div class="staff-detail">Cashier · Lonsdale</div></div>
+          <span class="staff-status clocked-in">● Clocked In</span>
+        </div>
+        <div class="staff-row">
+          <div class="staff-avatar" style="background:linear-gradient(135deg,#B45309,#92400E);">SA</div>
+          <div class="staff-info"><div class="staff-name">Sina Ahmadi</div><div class="staff-detail">Shift Lead · Broadway</div></div>
+          <span class="staff-status clocked-in">● Clocked In</span>
+        </div>
+        <div class="staff-row">
+          <div class="staff-avatar" style="background:linear-gradient(135deg,#065F46,#064E3B);">FN</div>
+          <div class="staff-info"><div class="staff-name">Fatima Nazari</div><div class="staff-detail">Produce · Kingsway</div></div>
+          <span class="staff-status clocked-in">● Clocked In</span>
+        </div>
+        <div class="staff-row">
+          <div class="staff-avatar" style="background:linear-gradient(135deg,#9F1239,#881337);">NE</div>
+          <div class="staff-info"><div class="staff-name">Neda Ebrahimi</div><div class="staff-detail">Manager · North Van</div></div>
+          <span class="staff-status clocked-in">● Clocked In</span>
+        </div>
+        <div class="staff-row">
+          <div class="staff-avatar" style="background:linear-gradient(135deg,#6B21A8,#4C1D95);">KM</div>
+          <div class="staff-info"><div class="staff-name">Kamran Moradi</div><div class="staff-detail">Deli · Commercial Dr</div></div>
+          <span class="staff-status off">Off Today</span>
+        </div>
+        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);text-align:center;font-size:13px;color:#aaa;">68 staff clocked in across all branches</div>
+      </div>
+
+      <div class="section-card">
+        <div class="section-title">
+          <div class="section-title-left"><span>🏆</span> Top Products This Week</div>
+        </div>
+        <div class="product-row">
+          <div class="product-rank">🥇</div><div class="product-emoji">🌾</div>
+          <div class="product-info"><div class="product-name">Basmati Rice 5kg</div><div class="product-cat">Grains</div></div>
+          <div class="product-sales"><div class="product-revenue">$6,240</div><div class="product-units">312 sold</div></div>
+        </div>
+        <div class="product-row">
+          <div class="product-rank">🥈</div><div class="product-emoji">🧀</div>
+          <div class="product-info"><div class="product-name">Bulgarian Feta 400g</div><div class="product-cat">Dairy</div></div>
+          <div class="product-sales"><div class="product-revenue">$4,180</div><div class="product-units">418 sold</div></div>
+        </div>
+        <div class="product-row">
+          <div class="product-rank">🥉</div><div class="product-emoji">🫖</div>
+          <div class="product-info"><div class="product-name">Bergamot Black Tea 500g</div><div class="product-cat">Tea</div></div>
+          <div class="product-sales"><div class="product-revenue">$3,920</div><div class="product-units">196 sold</div></div>
+        </div>
+        <div class="product-row">
+          <div class="product-rank"><span style="color:#aaa;font-size:13px;">4</span></div><div class="product-emoji">🫙</div>
+          <div class="product-info"><div class="product-name">Kashk 800g</div><div class="product-cat">Dairy</div></div>
+          <div class="product-sales"><div class="product-revenue">$3,750</div><div class="product-units">150 sold</div></div>
+        </div>
+        <div class="product-row">
+          <div class="product-rank"><span style="color:#aaa;font-size:13px;">5</span></div><div class="product-emoji">🌿</div>
+          <div class="product-info"><div class="product-name">Fresh Herb Bundle</div><div class="product-cat">Produce</div></div>
+          <div class="product-sales"><div class="product-revenue">$3,410</div><div class="product-units">682 sold</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="ann-section">
+      <div class="section-title"><div class="section-title-left"><span>📣</span> Send Staff Announcement</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="font-size:13px;font-weight:600;color:var(--text-mid);">Send to:</div>
+        <div class="ann-targets">
+          <span class="ann-target selected" onclick="this.classList.toggle('selected')">All Branches</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Broadway</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Lonsdale</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Kingsway</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Commercial Dr</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">North Van</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Marine Dr W</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">South Van</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Main St</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Port Coquitlam</span>
+          <span class="ann-target" onclick="this.classList.toggle('selected')">Warehouse</span>
+        </div>
+        <select class="ann-input" style="height:42px;">
+          <option>📢 General Announcement</option>
+          <option>⚠️ Urgent / Safety</option>
+          <option>📅 Schedule Change</option>
+          <option>🎉 Celebration / Recognition</option>
+          <option>📦 Inventory / Stocking</option>
+        </select>
+        <textarea class="ann-input" rows="3" id="annMsg" placeholder="Write your message here..."></textarea>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary" onclick="sendAnn()" style="flex:1;">📣 Send to Staff</button>
+          <button class="btn btn-outline" onclick="alert('Saved as draft')">💾 Save Draft</button>
+        </div>
+      </div>
+      <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:700;margin-bottom:12px;color:#aaa;">Recent Announcements</div>
+        <div class="alert-item info" style="margin-bottom:8px;">
+          <span class="alert-emoji">📅</span>
+          <div class="alert-text">Nowruz staff party — Tuesday April 8 after closing · All branches<div class="alert-sub">Sent by Ali Karimi · 2 days ago</div></div>
+        </div>
+        <div class="alert-item warning">
+          <span class="alert-emoji">🚛</span>
+          <div class="alert-text">New delivery schedule from Tehran Foods starts Monday<div class="alert-sub">Sent by Ali Karimi · 5 days ago</div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const branches=[
+  {name:"Lonsdale",area:"North Van",open:true,revenue:6820,tx:198,staff:12,change:14.2},
+  {name:"Broadway",area:"Kitsilano",open:true,revenue:5940,tx:172,staff:10,change:6.1},
+  {name:"Kingsway",area:"Burnaby",open:true,revenue:5310,tx:155,staff:9,change:-2.4},
+  {name:"Commercial Dr",area:"East Van",open:true,revenue:4870,tx:141,staff:8,change:9.8},
+  {name:"Marine Dr N",area:"North Van",open:true,revenue:4420,tx:128,staff:7,change:3.3},
+  {name:"Prince Edward",area:"South Van",open:true,revenue:4100,tx:119,staff:7,change:-1.2},
+  {name:"Main St",area:"South Van",open:true,revenue:3980,tx:115,staff:7,change:5.5},
+  {name:"Marine Dr W",area:"West Van",open:false,revenue:3240,tx:94,staff:5,change:0.8},
+  {name:"Port Coquitlam",area:"PoCo",open:true,revenue:2870,tx:83,staff:5,change:11.4},
+  {name:"Warehouse",area:"Vancouver",open:false,revenue:1260,tx:42,staff:3,change:-8.0},
+];
+const maxRev=Math.max(...branches.map(b=>b.revenue));
+const tbody=document.getElementById('branchTableBody');
+branches.forEach((b,i)=>{
+  const pct=Math.round((b.revenue/maxRev)*100);
+  const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span style="color:#aaa;font-size:13px">${i+1}</span>`;
+  tbody.innerHTML+=`<tr>
+    <td>${medal}</td>
+    <td><div class="branch-name">${b.name}</div><div class="branch-area">${b.area}</div></td>
+    <td><span class="status-dot ${b.open?'open':'closed'}"></span>${b.open?'Open':'Closed'}</td>
+    <td><div style="font-weight:700">$${b.revenue.toLocaleString()}</div><div class="revenue-bar-wrap"><div class="revenue-bar" style="width:${pct}%"></div></div></td>
+    <td style="font-weight:600">${b.tx}</td>
+    <td>${b.staff}</td>
+    <td style="font-weight:600;color:${b.change>=0?'#16A34A':'var(--crimson)'};">${b.change>=0?'↑':'↓'} ${Math.abs(b.change)}%</td>
+  </tr>`;
+});
+
+const days=[
+  {label:'Mon',cur:34200,prev:31500},{label:'Tue',cur:36800,prev:34000},
+  {label:'Wed',cur:33500,prev:35200},{label:'Thu',cur:39100,prev:36800},
+  {label:'Fri',cur:42810,prev:39500},{label:'Sat',cur:0,prev:44200},{label:'Sun',cur:0,prev:46100}
+];
+const chartMax=Math.max(...days.map(d=>Math.max(d.cur,d.prev)));
+const chart=document.getElementById('salesChart');
+days.forEach(d=>{
+  const mh=d.cur?Math.round((d.cur/chartMax)*90):0;
+  const ph=d.prev?Math.round((d.prev/chartMax)*90):0;
+  chart.innerHTML+=`<div class="chart-col">
+    <div class="chart-value" style="font-size:9px;">${d.cur?'$'+(d.cur/1000).toFixed(0)+'k':''}</div>
+    <div style="display:flex;gap:2px;align-items:flex-end;height:90px;">
+      <div class="chart-bar main" style="width:16px;height:${mh}px;opacity:${d.cur?1:0.25}"></div>
+      <div class="chart-bar compare" style="width:12px;height:${ph}px;opacity:${d.prev?1:0}"></div>
+    </div>
+    <div class="chart-label">${d.label}</div>
+  </div>`;
+});
+
+function sendAnn(){
+  const msg=document.getElementById('annMsg').value;
+  const targets=[...document.querySelectorAll('.ann-target.selected')].map(t=>t.textContent).join(', ');
+  if(!msg.trim()){alert('Please write a message first.');return;}
+  if(!targets){alert('Please select at least one branch.');return;}
+  alert('✅ Announcement sent!\n\nTo: '+targets+'\n\n"'+msg+'"');
+  document.getElementById('annMsg').value='';
+}
+</script>
+<script src="chatbot.js"></script>
+</body>
+</html>
